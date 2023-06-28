@@ -1,0 +1,21 @@
+package com.example.backendservice.validator.annotation;
+
+import com.example.backendservice.validator.GenderValidator;
+
+import javax.validation.Constraint;
+import javax.validation.Payload;
+import java.lang.annotation.*;
+
+@Documented
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.FIELD, ElementType.ANNOTATION_TYPE, ElementType.PARAMETER})
+@Constraint(validatedBy = {GenderValidator.class})
+public @interface ValidGender {
+
+    String message() default "invalid.gender-format";
+
+    Class<?>[] groups() default {};
+
+    Class<? extends Payload>[] payload() default {};
+
+}

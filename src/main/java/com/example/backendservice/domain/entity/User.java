@@ -7,6 +7,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Nationalized;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -33,6 +34,18 @@ public class User extends DateAuditing {
   @Nationalized
   @Column(nullable = false)
   private String fullName;
+
+  @Column(nullable = false, unique = true)
+  private String studentCode;
+
+  @Column(nullable = false)
+  private String gender;
+
+  private String avatar;
+
+  private LocalDate birthday;
+
+  private String phone;
 
   //Link to table Role
   @ManyToOne

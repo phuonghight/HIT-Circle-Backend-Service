@@ -28,4 +28,7 @@ public interface UserRepository extends JpaRepository<User, String> {
             new String[]{currentUser.getUsername()}));
   }
 
+  @Query("SELECT u FROM User u WHERE u.studentCode = ?1")
+  Optional<User> findUserByStudentCode(String studentCode);
+
 }
