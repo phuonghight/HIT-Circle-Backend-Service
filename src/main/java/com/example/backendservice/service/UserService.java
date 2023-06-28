@@ -10,10 +10,14 @@ import com.example.backendservice.security.UserPrincipal;
 
 public interface UserService {
 
-  UserDto getUserById(String userId);
+  UserDto getUserDtoById(String userId);
+
+  User getUserById(String userId);
 
   PaginationResponseDto<UserDto> getCustomers(PaginationFullRequestDto request);
 
   UserDto getCurrentUser(UserPrincipal principal);
+
+  UserDto updateProfile(String userId, UserUpdateDto userUpdateDto);
 
 }
