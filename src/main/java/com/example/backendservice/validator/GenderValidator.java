@@ -9,6 +9,7 @@ import javax.validation.ConstraintValidatorContext;
 public class GenderValidator implements ConstraintValidator<ValidGender, String> {
     @Override
     public boolean isValid(String target, ConstraintValidatorContext constraintValidatorContext) {
+        if (target == null) return true;
         return GenderConstant.isValid(target);
     }
 }

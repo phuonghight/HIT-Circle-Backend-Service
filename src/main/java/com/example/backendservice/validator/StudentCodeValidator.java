@@ -17,6 +17,7 @@ public class StudentCodeValidator implements ConstraintValidator<ValidStudentCod
 
     @Override
     public boolean isValid(String studentCode, ConstraintValidatorContext constraintValidatorContext) {
+        if (studentCode == null) return true;
         return pattern.matcher(studentCode).matches();
     }
 }
