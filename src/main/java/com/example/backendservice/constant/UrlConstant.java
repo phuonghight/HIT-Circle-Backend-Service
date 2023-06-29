@@ -6,6 +6,7 @@ public class UrlConstant {
     private static final String PRE_FIX = "/auth";
 
     public static final String LOGIN = PRE_FIX + "/login";
+    public static final String REGISTER = PRE_FIX + "/register";
     public static final String LOGOUT = PRE_FIX + "/logout";
 
     private Auth() {
@@ -18,6 +19,7 @@ public class UrlConstant {
     public static final String GET_USERS = PRE_FIX;
     public static final String GET_USER = PRE_FIX + "/{userId}";
     public static final String GET_CURRENT_USER = PRE_FIX + "/current";
+    public static final String UPDATE_USER = PRE_FIX;
 
     private User() {
     }

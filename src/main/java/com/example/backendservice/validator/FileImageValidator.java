@@ -16,7 +16,7 @@ public class FileImageValidator implements ConstraintValidator<ValidFileImage, M
       String contentType = file.getContentType();
       return isSupportedContentType(Objects.requireNonNull(contentType));
     }
-    return false;
+    return true;
   }
 
   private boolean isSupportedContentType(String contentType) {
