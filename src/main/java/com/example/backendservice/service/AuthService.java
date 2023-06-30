@@ -1,5 +1,6 @@
 package com.example.backendservice.service;
 
+import com.example.backendservice.domain.dto.request.ForgotPasswordRequestDto;
 import com.example.backendservice.domain.dto.request.LoginRequestDto;
 import com.example.backendservice.domain.dto.request.TokenRefreshRequestDto;
 import com.example.backendservice.domain.dto.request.UserCreateDto;
@@ -23,4 +24,5 @@ public interface AuthService {
   CommonResponseDto logout(HttpServletRequest request,
                            HttpServletResponse response, Authentication authentication);
 
+  CommonResponseDto forgotPassword(ForgotPasswordRequestDto requestDto);
 }

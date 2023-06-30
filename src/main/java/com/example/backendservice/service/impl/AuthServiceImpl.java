@@ -1,8 +1,11 @@
 package com.example.backendservice.service.impl;
 
+import com.example.backendservice.constant.CommonConstant;
 import com.example.backendservice.constant.ErrorMessage;
 import com.example.backendservice.constant.RoleConstant;
 import com.example.backendservice.constant.MessageConstant;
+import com.example.backendservice.domain.dto.common.DataMailDto;
+import com.example.backendservice.domain.dto.request.ForgotPasswordRequestDto;
 import com.example.backendservice.domain.dto.request.LoginRequestDto;
 import com.example.backendservice.domain.dto.request.TokenRefreshRequestDto;
 import com.example.backendservice.domain.dto.request.UserCreateDto;
@@ -13,13 +16,17 @@ import com.example.backendservice.domain.dto.response.UserDto;
 import com.example.backendservice.domain.entity.User;
 import com.example.backendservice.domain.mapper.UserMapper;
 import com.example.backendservice.exception.AlreadyExistException;
+import com.example.backendservice.exception.NotFoundException;
 import com.example.backendservice.exception.UnauthorizedException;
 import com.example.backendservice.repository.RoleRepository;
 import com.example.backendservice.repository.UserRepository;
 import com.example.backendservice.security.UserPrincipal;
 import com.example.backendservice.security.jwt.JwtTokenProvider;
 import com.example.backendservice.service.AuthService;
+import com.example.backendservice.util.RandomString;
+import com.example.backendservice.util.SendMailUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -30,8 +37,11 @@ import org.springframework.util.ObjectUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
@@ -47,6 +57,8 @@ public class AuthServiceImpl implements AuthService {
   private final AuthenticationManager authenticationManager;
 
   private final JwtTokenProvider jwtTokenProvider;
+
+  private final SendMailUtil sendMailUtil;
 
   @Override
   public LoginResponseDto login(LoginRequestDto request) {
@@ -97,6 +109,35 @@ public class AuthServiceImpl implements AuthService {
                                   HttpServletResponse response, Authentication authentication) {
     new SecurityContextLogoutHandler().logout(request, response, authentication);
     return new CommonResponseDto(true, MessageConstant.SUCCESSFULLY_LOGOUT);
+  }
+
+  @Override
+  public CommonResponseDto forgotPassword(ForgotPasswordRequestDto requestDto) {
+    User user = userRepository.findByUsername(requestDto.getEmail())
+            .orElseThrow(() -> {
+              throw new NotFoundException(ErrorMessage.User.ERR_NOT_FOUND_USERNAME,
+                      new String[]{requestDto.getEmail()});
+            });
+
+    String newPassword = RandomString.generate(CommonConstant.RANDOM_PASSWORD_LENGTH);
+
+    Map<String, Object> props = new HashMap<>();
+    props.put("fullName", user.getFullName());
+    props.put("password", newPassword);
+    props.put("appName", CommonConstant.APP_NAME);
+
+    DataMailDto mail = new DataMailDto(user.getUsername(),
+            MessageConstant.SUBJECT_MAIL_RESET_PASSWORD, null, props);
+
+    try {
+      sendMailUtil.sendEmailWithHTML(mail, "reset-password.html");
+    } catch (Exception e) {
+      log.error("Send mail failed for {}", e.getMessage());
+    }
+
+    user.setPassword(passwordEncoder.encode(newPassword));
+    userRepository.save(user);
+    return new CommonResponseDto(true, MessageConstant.RESET_PASSWORD);
   }
 
 }
