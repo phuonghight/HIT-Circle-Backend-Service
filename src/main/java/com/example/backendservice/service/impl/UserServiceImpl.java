@@ -2,14 +2,18 @@ package com.example.backendservice.service.impl;
 
 import com.example.backendservice.constant.ErrorMessage;
 import com.example.backendservice.constant.SortByDataConstant;
+import com.example.backendservice.constant.SuccessMessage;
 import com.example.backendservice.domain.dto.pagination.PaginationFullRequestDto;
 import com.example.backendservice.domain.dto.pagination.PaginationResponseDto;
+import com.example.backendservice.domain.dto.request.ChangePasswordRequestDto;
 import com.example.backendservice.domain.dto.request.UserUpdateDto;
+import com.example.backendservice.domain.dto.response.CommonResponseDto;
 import com.example.backendservice.domain.dto.response.UserDto;
 import com.example.backendservice.domain.entity.User;
 import com.example.backendservice.domain.mapper.UserMapper;
 import com.example.backendservice.exception.AlreadyExistException;
 import com.example.backendservice.exception.NotFoundException;
+import com.example.backendservice.exception.UnauthorizedException;
 import com.example.backendservice.repository.UserRepository;
 import com.example.backendservice.security.UserPrincipal;
 import com.example.backendservice.service.UserService;
@@ -17,6 +21,11 @@ import com.example.backendservice.util.PaginationUtil;
 import com.example.backendservice.util.UploadFileUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -28,6 +37,10 @@ public class UserServiceImpl implements UserService {
   private final UserMapper userMapper;
 
   private final UploadFileUtil uploadFileUtil;
+
+  private final PasswordEncoder passwordEncoder;
+
+  private final AuthenticationManager authenticationManager;
 
   @Override
   public UserDto getUserDtoById(String userId) {
@@ -86,6 +99,23 @@ public class UserServiceImpl implements UserService {
     }
 
     return userMapper.toUserDto(userRepository.save(user));
+  }
+
+  @Override
+  public CommonResponseDto changePassword(String userId, ChangePasswordRequestDto passwordRequestDto) {
+    User user = this.getUserById(userId);
+
+    try {
+      Authentication authentication = authenticationManager.authenticate(
+              new UsernamePasswordAuthenticationToken(user.getUsername(), passwordRequestDto.getOldPassword()));
+    } catch (BadCredentialsException e) {
+      throw new UnauthorizedException(ErrorMessage.Auth.ERR_INCORRECT_PASSWORD);
+    }
+
+    user.setPassword(passwordEncoder.encode(passwordRequestDto.getNewPassword()));
+    userRepository.save(user);
+
+    return new CommonResponseDto(true, SuccessMessage.SUCCESSFULLY_CHANGE_PASSWORD);
   }
 
 }
