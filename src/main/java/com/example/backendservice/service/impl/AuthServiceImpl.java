@@ -2,7 +2,7 @@ package com.example.backendservice.service.impl;
 
 import com.example.backendservice.constant.ErrorMessage;
 import com.example.backendservice.constant.RoleConstant;
-import com.example.backendservice.constant.SuccessMessage;
+import com.example.backendservice.constant.MessageConstant;
 import com.example.backendservice.domain.dto.request.LoginRequestDto;
 import com.example.backendservice.domain.dto.request.TokenRefreshRequestDto;
 import com.example.backendservice.domain.dto.request.UserCreateDto;
@@ -96,7 +96,7 @@ public class AuthServiceImpl implements AuthService {
   public CommonResponseDto logout(HttpServletRequest request,
                                   HttpServletResponse response, Authentication authentication) {
     new SecurityContextLogoutHandler().logout(request, response, authentication);
-    return new CommonResponseDto(true, SuccessMessage.SUCCESSFULLY_LOGOUT);
+    return new CommonResponseDto(true, MessageConstant.SUCCESSFULLY_LOGOUT);
   }
 
 }
