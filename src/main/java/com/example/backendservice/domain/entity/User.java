@@ -8,8 +8,6 @@ import org.hibernate.annotations.Nationalized;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -53,10 +51,5 @@ public class User extends DateAuditing {
   @ManyToOne
   @JoinColumn(name = "role_id", foreignKey = @ForeignKey(name = "FK_USER_ROLE"))
   private Role role;
-
-  //Link to table Post
-  @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
-  @JsonIgnore
-  private Set<Post> posts = new HashSet<>();
 
 }
