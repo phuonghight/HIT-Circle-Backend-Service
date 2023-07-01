@@ -11,7 +11,6 @@ import javax.validation.constraints.NotBlank;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-@Setter
 public class PostCreateDto {
     @NotBlank(message = ErrorMessage.NOT_BLANK_FIELD)
     private String caption;

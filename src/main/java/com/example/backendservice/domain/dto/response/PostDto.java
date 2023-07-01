@@ -13,5 +13,5 @@ import lombok.Setter;
 public class PostDto extends DateAuditingDto {
     private String id;
     private String caption;
-    private String user_id;
+    private String userId;
 }
