@@ -108,11 +108,11 @@ public class UserServiceImpl implements UserService {
 //      throw new UnauthorizedException(ErrorMessage.Auth.ERR_INCORRECT_PASSWORD);
 //    }
 
-    if (!passwordEncoder.matches(passwordRequestDto.getOldPassword(), user.getPassword())) {
+    if (!passwordEncoder.matches(passwordRequestDto.getCurrentPassword(), user.getPassword())) {
       return new CommonResponseDto(false, MessageConstant.CURRENT_PASSWORD_INCORRECT);
     }
 
-    if (passwordRequestDto.getOldPassword().equals(passwordRequestDto.getNewPassword())) {
+    if (passwordRequestDto.getCurrentPassword().equals(passwordRequestDto.getNewPassword())) {
       return new CommonResponseDto(false, MessageConstant.SAME_PASSWORD);
     }
 
