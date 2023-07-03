@@ -1,6 +1,7 @@
 package com.example.backendservice.domain.dto.response;
 
 import com.example.backendservice.domain.dto.common.UserDateAuditingDto;
+import com.example.backendservice.domain.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,8 +15,8 @@ public class FollowResponseDto extends UserDateAuditingDto {
 
     private String id;
 
-    private String from;
+    private User from;
 
-    private String to;
+    private User to;
 
 }
