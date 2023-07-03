@@ -21,6 +21,9 @@ public class UrlConstant {
     public static final String GET_CURRENT_USER = PRE_FIX + "/current";
     public static final String UPDATE_USER = PRE_FIX;
 
+    public static final String GET_FOLLOWERS = PRE_FIX + "/followers";
+    public static final String GET_FOLLOWING = PRE_FIX + "/following";
+
     private User() {
     }
   }
