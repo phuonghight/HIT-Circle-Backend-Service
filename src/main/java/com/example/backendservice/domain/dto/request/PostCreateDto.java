@@ -10,6 +10,7 @@ import javax.validation.constraints.NotBlank;
 
 @AllArgsConstructor
 @NoArgsConstructor
+@Setter
 @Getter
 public class PostCreateDto {
     private String caption;
