@@ -29,4 +29,8 @@ public class Follow extends UserDateAuditing {
     @JoinColumn(name="user_following_id", foreignKey = @ForeignKey(name = "FK_USER_FOLLOWING"))
     private User to;
 
+    public Follow(User from, User to) {
+        this.from = from;
+        this.to = to;
+    }
 }

@@ -107,7 +107,7 @@ public class UserServiceImpl implements UserService {
                                                      FollowRequestDto followRequestDto) {
     Pageable pageable = PaginationUtil.buildPageable(paginationSortRequestDto, SortByDataConstant.Follow);
 
-    Page<Follow> followPage = followRepository.findFollowsByTo_Id(followRequestDto.getUserId(), pageable);
+    Page<Follow> followPage = followRepository.findFollowsByToId(followRequestDto.getUserId(), pageable);
 
     List<Follow> follows = followPage.getContent();
 
@@ -129,7 +129,7 @@ public class UserServiceImpl implements UserService {
                                                      FollowRequestDto followRequestDto) {
     Pageable pageable = PaginationUtil.buildPageable(paginationSortRequestDto, SortByDataConstant.Follow);
 
-    Page<Follow> followPage = followRepository.findFollowsByFrom_Id(followRequestDto.getUserId(), pageable);
+    Page<Follow> followPage = followRepository.findFollowsByFromId(followRequestDto.getUserId(), pageable);
 
     List<Follow> follows = followPage.getContent();
 

@@ -13,12 +13,12 @@ import java.util.Optional;
 public interface FollowRepository extends JpaRepository<Follow, String> {
 
     @Query("SELECT f FROM Follow f WHERE f.from.id=?1 and f.to.id=?2")
-    Optional<Follow> findFollowByFromAndTo(String fromUserId, String toUserId);
+    Optional<Follow> findFollowByFromIdAndToId(String fromUserId, String toUserId);
 
     @Query("SELECT f FROM Follow f WHERE  f.to.id=?1")
-    Page<Follow> findFollowsByTo_Id(String toUserId, Pageable pageable);
+    Page<Follow> findFollowsByToId(String toUserId, Pageable pageable);
 
     @Query("SELECT f FROM Follow f WHERE  f.from.id=?1")
-    Page<Follow> findFollowsByFrom_Id(String fromUserId, Pageable pageable);
+    Page<Follow> findFollowsByFromId(String fromUserId, Pageable pageable);
 
 }
