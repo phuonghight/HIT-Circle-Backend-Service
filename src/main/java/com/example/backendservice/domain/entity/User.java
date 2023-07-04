@@ -25,7 +25,7 @@ public class User extends DateAuditing {
   private String id;
 
   @Column(nullable = false, unique = true)
-  private String username;
+  private String email;
 
   @Column(nullable = false)
   @JsonIgnore
@@ -34,9 +34,6 @@ public class User extends DateAuditing {
   @Nationalized
   @Column(nullable = false)
   private String fullName;
-
-  @Column(nullable = false, unique = true)
-  private String studentCode;
 
   @Column(nullable = false)
   private String gender;

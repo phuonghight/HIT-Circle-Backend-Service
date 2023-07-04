@@ -1,6 +1,5 @@
 package com.example.backendservice.service.impl;
 
-import com.example.backendservice.constant.CommonConstant;
 import com.example.backendservice.constant.ErrorMessage;
 import com.example.backendservice.constant.RoleConstant;
 import com.example.backendservice.domain.dto.request.LoginRequestDto;
@@ -72,16 +71,11 @@ public class AuthServiceImpl implements AuthService {
 
   @Override
   public UserDto register(UserCreateDto userCreateDto) {
-    Optional<User> findUserByUsername = userRepository.findByUsername(userCreateDto.getUsername());
-    Optional<User> findUserByStudentCode = userRepository.findUserByStudentCode(userCreateDto.getStudentCode());
+    Optional<User> findUserByEmail = userRepository.findByEmail(userCreateDto.getEmail());
 
-    if(!ObjectUtils.isEmpty(findUserByUsername)) {
+    if(!ObjectUtils.isEmpty(findUserByEmail)) {
       throw new AlreadyExistException(ErrorMessage.User.ERR_ALREADY_EXIST_USER,
-              new String[]{"email: " + userCreateDto.getUsername()});
-    }
-    if(!ObjectUtils.isEmpty(findUserByStudentCode)) {
-      throw new AlreadyExistException(ErrorMessage.User.ERR_ALREADY_EXIST_USER,
-              new String[]{"student code: " + userCreateDto.getStudentCode()});
+              new String[]{"email: " + userCreateDto.getEmail()});
     }
 
     User user = userMapper.toUser(userCreateDto);

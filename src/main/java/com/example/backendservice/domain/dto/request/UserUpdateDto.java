@@ -22,12 +22,9 @@ public class UserUpdateDto {
 
   @Email(regexp = "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$",
           message = ErrorMessage.INVALID_FORMAT_EMAIL)
-  private String username;
+  private String email;
 
   private String fullName;
-
-  @ValidStudentCode(regexp = "^20\\d{8}$")
-  private String studentCode;
 
   @ValidGender
   private String gender;
