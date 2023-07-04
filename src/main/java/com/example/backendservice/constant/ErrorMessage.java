@@ -33,5 +33,13 @@ public class ErrorMessage {
     public static final String ERR_NOT_FOUND_ID = "exception.user.not.found.id";
     public static final String ERR_ALREADY_EXIST_USER = "exception.user.already.exist";
   }
+  public static class Post {
+    public static final String ERR_NOT_FOUND_ID = "exception.post.not.found.id";
+    public static final String ERR_INVALID = "exception.post.invalid";
+    public static final String ERR_UNAUTHORIZED = "exception.post.unauthorized";
+  }
 
+  public static class PostMedia {
+    public static final String ERR_NOT_FOUND_ID = "exception.postmedia.not.found.id";
+  }
 }
