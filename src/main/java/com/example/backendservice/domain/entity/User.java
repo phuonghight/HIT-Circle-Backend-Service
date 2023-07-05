@@ -38,7 +38,7 @@ public class User extends DateAuditing {
   @Column(nullable = false, unique = true)
   private String username;
 
-  @Column(nullable = false)
+  @Column(nullable = false, unique = true)
   private String phone;
 
   private String gender;

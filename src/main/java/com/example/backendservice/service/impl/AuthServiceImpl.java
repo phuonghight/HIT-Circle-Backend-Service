@@ -18,6 +18,7 @@ import com.example.backendservice.repository.UserRepository;
 import com.example.backendservice.security.UserPrincipal;
 import com.example.backendservice.security.jwt.JwtTokenProvider;
 import com.example.backendservice.service.AuthService;
+import com.example.backendservice.util.CheckLoginRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.Authentication;
@@ -49,15 +50,26 @@ public class AuthServiceImpl implements AuthService {
   @Override
   public LoginResponseDto login(LoginRequestDto request) {
     try {
-      Authentication authentication = authenticationManager.authenticate(
-          new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
+      Authentication authentication = null;
+      if (CheckLoginRequest.isPhone(request.getAccount())) {
+        Optional<User> user = userRepository.findUserByPhone(request.getAccount());
+        if (user.isPresent()) {
+          authentication = authenticationManager.authenticate(
+                  new UsernamePasswordAuthenticationToken(user.get().getEmail(), request.getPassword()));
+        } else throw new UnauthorizedException(ErrorMessage.Auth.ERR_INCORRECT_ACCOUNT);
+      } else if (CheckLoginRequest.isEmail(request.getAccount())) {
+        authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(request.getAccount(), request.getPassword()));
+      }
+
       SecurityContextHolder.getContext().setAuthentication(authentication);
+      assert authentication != null;
       UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
       String accessToken = jwtTokenProvider.generateToken(userPrincipal, Boolean.FALSE);
       String refreshToken = jwtTokenProvider.generateToken(userPrincipal, Boolean.TRUE);
       return new LoginResponseDto(accessToken, refreshToken, userPrincipal.getId(), authentication.getAuthorities());
     } catch (InternalAuthenticationServiceException e) {
-      throw new UnauthorizedException(ErrorMessage.Auth.ERR_INCORRECT_USERNAME);
+      throw new UnauthorizedException(ErrorMessage.Auth.ERR_INCORRECT_ACCOUNT);
     } catch (BadCredentialsException e) {
       throw new UnauthorizedException(ErrorMessage.Auth.ERR_INCORRECT_PASSWORD);
     }

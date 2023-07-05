@@ -25,6 +25,9 @@ public interface UserRepository extends JpaRepository<User, String> {
   @Query("SELECT u FROM User u WHERE u.username = ?1")
   Optional<User> findUserByUsername(String username);
 
+  @Query("SELECT u FROM User u WHERE u.phone = ?1")
+  Optional<User> findUserByPhone(String phone);
+
   default User getUser(UserPrincipal currentUser) {
     return findUserByEmail(currentUser.getUsername())
         .orElseThrow(() -> new NotFoundException(ErrorMessage.User.ERR_NOT_FOUND_USERNAME,
