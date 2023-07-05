@@ -1,10 +1,7 @@
 package com.example.backendservice.domain.dto.request;
 
 import com.example.backendservice.constant.ErrorMessage;
-import com.example.backendservice.validator.annotation.ValidDate;
-import com.example.backendservice.validator.annotation.ValidFileImage;
-import com.example.backendservice.validator.annotation.ValidGender;
-import com.example.backendservice.validator.annotation.ValidStudentCode;
+import com.example.backendservice.validator.annotation.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,7 +9,6 @@ import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.Email;
-import javax.validation.constraints.Pattern;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -20,11 +16,17 @@ import javax.validation.constraints.Pattern;
 @Setter
 public class UserUpdateDto {
 
-  @Email(regexp = "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$",
+  @Email(regexp = "^[a-z0-9](\\.?[a-z0-9]){5,}@g(oogle)?mail\\.com$",
           message = ErrorMessage.INVALID_FORMAT_EMAIL)
   private String email;
 
   private String fullName;
+
+  @ValidUsername
+  private String username;
+
+  @ValidPhone
+  private String phone;
 
   @ValidGender
   private String gender;
@@ -34,8 +36,5 @@ public class UserUpdateDto {
 
   @ValidDate
   private String birthday;
-
-  @Pattern(regexp = "^0\\d{9}$", message = ErrorMessage.INVALID_FORMAT_PHONE)
-  private String phone;
 
 }

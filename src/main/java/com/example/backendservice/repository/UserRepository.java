@@ -20,10 +20,13 @@ public interface UserRepository extends JpaRepository<User, String> {
   Optional<User> findById(String id);
 
   @Query("SELECT u FROM User u WHERE u.email = ?1")
-  Optional<User> findByEmail(String email);
+  Optional<User> findUserByEmail(String email);
+
+  @Query("SELECT u FROM User u WHERE u.username = ?1")
+  Optional<User> findUserByUsername(String username);
 
   default User getUser(UserPrincipal currentUser) {
-    return findByEmail(currentUser.getUsername())
+    return findUserByEmail(currentUser.getUsername())
         .orElseThrow(() -> new NotFoundException(ErrorMessage.User.ERR_NOT_FOUND_USERNAME,
             new String[]{currentUser.getUsername()}));
   }

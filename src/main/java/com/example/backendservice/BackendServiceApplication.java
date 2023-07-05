@@ -52,15 +52,15 @@ public class BackendServiceApplication {
                 roleRepository.save(new Role(null, RoleConstant.USER, null));
             }
             //init admin
-            if (userRepository.count() == 0) {
-                User admin = User.builder()
-                        .email(userInfo.getEmail())
-                        .password(passwordEncoder.encode(userInfo.getPassword()))
-                        .fullName(userInfo.getFullName())
-                        .gender("MALE")
-                        .role(roleRepository.findByRoleName(RoleConstant.ADMIN)).build();
-                userRepository.save(admin);
-            }
+//            if (userRepository.count() == 0) {
+//                User admin = User.builder()
+//                        .email(userInfo.getEmail())
+//                        .password(passwordEncoder.encode(userInfo.getPassword()))
+//                        .fullName(userInfo.getFullName())
+//                        .gender("MALE")
+//                        .role(roleRepository.findByRoleName(RoleConstant.ADMIN)).build();
+//                userRepository.save(admin);
+//            }
         };
     }
 

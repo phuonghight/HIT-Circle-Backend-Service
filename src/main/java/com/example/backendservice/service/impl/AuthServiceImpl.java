@@ -25,7 +25,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ObjectUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -71,11 +70,17 @@ public class AuthServiceImpl implements AuthService {
 
   @Override
   public UserDto register(UserCreateDto userCreateDto) {
-    Optional<User> findUserByEmail = userRepository.findByEmail(userCreateDto.getEmail());
+    Optional<User> findUserByEmail = userRepository.findUserByUsername(userCreateDto.getEmail());
+    Optional<User> findUserByUsername = userRepository.findUserByUsername(userCreateDto.getUsername());
 
-    if(!ObjectUtils.isEmpty(findUserByEmail)) {
+    if(findUserByEmail.isPresent()) {
       throw new AlreadyExistException(ErrorMessage.User.ERR_ALREADY_EXIST_USER,
               new String[]{"email: " + userCreateDto.getEmail()});
+    }
+
+    if(findUserByUsername.isPresent()) {
+      throw new AlreadyExistException(ErrorMessage.User.ERR_ALREADY_EXIST_USER,
+              new String[]{"username: " + userCreateDto.getUsername()});
     }
 
     User user = userMapper.toUser(userCreateDto);

@@ -35,14 +35,17 @@ public class User extends DateAuditing {
   @Column(nullable = false)
   private String fullName;
 
+  @Column(nullable = false, unique = true)
+  private String username;
+
   @Column(nullable = false)
+  private String phone;
+
   private String gender;
 
   private String avatar;
 
   private LocalDate birthday;
-
-  private String phone;
 
   //Link to table Role
   @ManyToOne

@@ -22,14 +22,16 @@ public class UserDto extends DateAuditingDto {
 
   private String fullName;
 
+  private String username;
+
+  private String phone;
+
   private String gender;
 
   private String avatar;
 
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = CommonConstant.PATTERN_DATE)
   private LocalDate birthday;
-
-  private String phone;
 
   private String roleName;
 
