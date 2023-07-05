@@ -34,4 +34,24 @@ public class UrlConstant {
     private Follow() {}
   }
 
+  public static class Post {
+    private static final String PRE_FIX = "/post";
+    public static final String CREATE_POST = PRE_FIX + "/create_new_post";
+    public static final String GET_POST = PRE_FIX + "/{postId}";
+    public static final String UPDATE_POST = PRE_FIX + "/{postId}";
+    public static final String DELETE_POST = PRE_FIX + "/{postId}";
+    public static final String GET_MY_POST = PRE_FIX + "/get_all/{userId}";
+    public static final String GET_ALL_POST = PRE_FIX + "/get_all";
+
+    private Post() {
+    }
+  }
+
+  public static class PostMedia {
+    private static final String PRE_FIX = "/postmedia";
+    public static final String GET_POSTMEDIA = PRE_FIX + "/{postMediaId}";
+    private PostMedia() {
+    }
+  }
+
 }
