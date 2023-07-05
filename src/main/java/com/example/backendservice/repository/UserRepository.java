@@ -34,4 +34,10 @@ public interface UserRepository extends JpaRepository<User, String> {
             new String[]{currentUser.getUsername()}));
   }
 
+  boolean existsByEmail(String email);
+
+  boolean existsByUsername(String username);
+
+  boolean existsByPhone(String phone);
+
 }

@@ -63,17 +63,24 @@ public class UserServiceImpl implements UserService {
     userMapper.updateUser(user, userUpdateDto);
 
     if (userUpdateDto.getEmail() != null) {
-      if (userRepository.findUserByUsername(userUpdateDto.getEmail()).isEmpty()) {
+      if (!userRepository.existsByEmail(userUpdateDto.getEmail())) {
         user.setEmail(userUpdateDto.getEmail());
       } else throw new AlreadyExistException(ErrorMessage.User.ERR_ALREADY_EXIST_USER,
               new String[]{"email: " + userUpdateDto.getEmail()});
     }
 
     if (userUpdateDto.getUsername() != null) {
-      if (userRepository.findUserByUsername(userUpdateDto.getUsername()).isEmpty()) {
+      if (!userRepository.existsByUsername(userUpdateDto.getUsername())) {
         user.setUsername(userUpdateDto.getUsername());
       } else throw new AlreadyExistException(ErrorMessage.User.ERR_ALREADY_EXIST_USER,
               new String[]{"username: " + userUpdateDto.getUsername()});
+    }
+
+    if (userUpdateDto.getPhone() != null) {
+      if (!userRepository.existsByPhone(userUpdateDto.getPhone())) {
+        user.setUsername(userUpdateDto.getUsername());
+      } else throw new AlreadyExistException(ErrorMessage.User.ERR_ALREADY_EXIST_USER,
+              new String[]{"phone: " + userUpdateDto.getPhone()});
     }
 
     if (userUpdateDto.getAvatar() != null) {

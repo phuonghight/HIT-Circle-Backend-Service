@@ -62,8 +62,11 @@ public class AuthServiceImpl implements AuthService {
                 new UsernamePasswordAuthenticationToken(request.getAccount(), request.getPassword()));
       }
 
+      if (authentication == null) {
+        throw new UnauthorizedException(ErrorMessage.Auth.ERR_INCORRECT_ACCOUNT);
+      }
+
       SecurityContextHolder.getContext().setAuthentication(authentication);
-      assert authentication != null;
       UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
       String accessToken = jwtTokenProvider.generateToken(userPrincipal, Boolean.FALSE);
       String refreshToken = jwtTokenProvider.generateToken(userPrincipal, Boolean.TRUE);
@@ -82,17 +85,17 @@ public class AuthServiceImpl implements AuthService {
 
   @Override
   public UserDto register(UserCreateDto userCreateDto) {
-    Optional<User> findUserByEmail = userRepository.findUserByUsername(userCreateDto.getEmail());
-    Optional<User> findUserByUsername = userRepository.findUserByUsername(userCreateDto.getUsername());
-
-    if(findUserByEmail.isPresent()) {
+    if(userRepository.existsByEmail(userCreateDto.getEmail())) {
       throw new AlreadyExistException(ErrorMessage.User.ERR_ALREADY_EXIST_USER,
               new String[]{"email: " + userCreateDto.getEmail()});
     }
-
-    if(findUserByUsername.isPresent()) {
+    if(userRepository.existsByUsername(userCreateDto.getUsername())) {
       throw new AlreadyExistException(ErrorMessage.User.ERR_ALREADY_EXIST_USER,
               new String[]{"username: " + userCreateDto.getUsername()});
+    }
+    if(userRepository.existsByPhone(userCreateDto.getPhone())) {
+      throw new AlreadyExistException(ErrorMessage.User.ERR_ALREADY_EXIST_USER,
+              new String[]{"phone: " + userCreateDto.getPhone()});
     }
 
     User user = userMapper.toUser(userCreateDto);
