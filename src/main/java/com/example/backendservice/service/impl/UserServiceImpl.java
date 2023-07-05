@@ -78,7 +78,7 @@ public class UserServiceImpl implements UserService {
 
     if (userUpdateDto.getPhone() != null) {
       if (!userRepository.existsByPhone(userUpdateDto.getPhone())) {
-        user.setUsername(userUpdateDto.getUsername());
+        user.setPhone(userUpdateDto.getPhone());
       } else throw new AlreadyExistException(ErrorMessage.User.ERR_ALREADY_EXIST_USER,
               new String[]{"phone: " + userUpdateDto.getPhone()});
     }
