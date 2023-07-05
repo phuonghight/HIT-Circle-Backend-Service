@@ -34,4 +34,9 @@ public class ErrorMessage {
     public static final String ERR_ALREADY_EXIST_USER = "exception.user.already.exist";
   }
 
+  public static class Follow {
+    public static final String ERR_NOT_FOUND = "exception.follow.not.found";
+    public static final String ERR_ALREADY_EXIST = "exception.follow.already.exist";
+  }
+
 }
