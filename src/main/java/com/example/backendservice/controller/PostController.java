@@ -26,10 +26,9 @@ public class PostController {
     @Operation(summary = "API create new post")
     @PostMapping( value = UrlConstant.Post.CREATE_POST)
     public ResponseEntity<?> createNewPost(@ModelAttribute PostCreateDto postCreateDto,
-                                           @RequestParam(value = "files",required = false) MultipartFile[] multipartFiles,
                                            @Parameter(name = "user", hidden = true)
                                            @CurrentUser UserPrincipal user    ) {
-        return VsResponseUtil.success(postService.createNewPost(postCreateDto, multipartFiles, user.getId() ));
+        return VsResponseUtil.success(postService.createNewPost(postCreateDto, user.getId() ));
     }
     @Tag(name = "post-controller")
     @Operation(summary = "API get post")
@@ -42,10 +41,9 @@ public class PostController {
     @PatchMapping( value = UrlConstant.Post.UPDATE_POST)
     public ResponseEntity<?> updatePostById(@PathVariable String postId,
                                             @ModelAttribute PostUpdateDto postUpdateDto,
-                                            @RequestParam(value = "files",required = false) MultipartFile[] multipartFiles,
                                             @Parameter(name = "user", hidden = true)
-                                                @CurrentUser UserPrincipal user    ) {
-        return VsResponseUtil.success(postService.updatePostById( postId, postUpdateDto, multipartFiles, user.getId()));
+                                            @CurrentUser UserPrincipal user    ) {
+        return VsResponseUtil.success(postService.updatePostById( postId, postUpdateDto, user.getId()));
     }
 
     @Tag(name = "post-controller")
@@ -58,17 +56,18 @@ public class PostController {
     }
 
     @Tag(name = "post-controller")
-    @Operation(summary = "API get all post by my user id")
+    @Operation(summary = "API get all post by user id")
     @GetMapping( value = UrlConstant.Post.GET_MY_POST)
     public ResponseEntity<?> findAllPostByUserId(@PathVariable String userId) {
         return VsResponseUtil.success(postService.findAllPostByUserId(userId));
     }
 
     @Tag(name = "post-controller")
-    @Operation(summary = "API get all post")
+    @Operation(summary = "API get all post follow")
     @GetMapping( value = UrlConstant.Post.GET_ALL_POST)
-    public ResponseEntity<?> findAllPost() {
-        return VsResponseUtil.success(postService.findAllPost());
+    public ResponseEntity<?> findAllPost(@Parameter(name = "user", hidden = true)
+                                             @CurrentUser UserPrincipal user) {
+        return VsResponseUtil.success(postService.findAllPost(user.getId()));
     }
 
 }

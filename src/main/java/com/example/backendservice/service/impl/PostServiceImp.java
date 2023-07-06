@@ -2,7 +2,6 @@ package com.example.backendservice.service.impl;
 
 import com.example.backendservice.constant.ErrorMessage;
 import com.example.backendservice.domain.dto.request.PostCreateDto;
-import com.example.backendservice.domain.dto.request.PostMediaCreateDto;
 import com.example.backendservice.domain.dto.request.PostUpdateDto;
 import com.example.backendservice.domain.dto.response.PostDto;
 import com.example.backendservice.domain.entity.Post;
@@ -33,8 +32,9 @@ public class PostServiceImp implements PostService {
     private final PostMapper postMapper;
     private final UploadFileUtil uploadFileUtil;
     @Override
-    public PostDto createNewPost(PostCreateDto postCreateDto, MultipartFile[] multipartFiles, String userId) {
-        if ((postCreateDto.getCaption() == null || postCreateDto.getCaption().equals("")) && multipartFiles == null) {
+    public PostDto createNewPost(PostCreateDto postCreateDto, String userId) {
+        if ((postCreateDto.getCaption() == null || postCreateDto.getCaption().equals("")) &&
+                (postCreateDto.getFiles() == null || postCreateDto.getFiles().isEmpty())) {
             throw new InvalidException(ErrorMessage.Post.ERR_INVALID);
         }
         else {
@@ -44,10 +44,9 @@ public class PostServiceImp implements PostService {
             post.setUser(user);
             postRepository.save(post);
             List<PostMedia> postMediaList = new ArrayList<>();
-            if (multipartFiles != null) {
-                for (MultipartFile file : multipartFiles) {
-                    PostMediaCreateDto postMediaCreateDto = new PostMediaCreateDto(file);
-                    postMediaList.add(postMediaService.createNewPostMedia(post.getId(), postMediaCreateDto));
+            if (postCreateDto.getFiles() != null && !postCreateDto.getFiles().isEmpty()) {
+                for (MultipartFile file : postCreateDto.getFiles()) {
+                    postMediaList.add(postMediaService.createNewPostMedia(post.getId(), file));
                 }
             }
             post.setPostMedia(postMediaList);
@@ -62,12 +61,13 @@ public class PostServiceImp implements PostService {
     }
 
     @Override
-    public PostDto updatePostById(String postId, PostUpdateDto postUpdateDto, MultipartFile[] multipartFiles, String userId) {
+    public PostDto updatePostById(String postId, PostUpdateDto postUpdateDto, String userId) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new NotFoundException(ErrorMessage.Post.ERR_NOT_FOUND_ID, new String[]{postId}));
 
         if (post.getUser().getId().equals(userId)) {
-            if ((postUpdateDto.getCaption() == null || postUpdateDto.getCaption().equals("")) && multipartFiles == null) {
+            if ((postUpdateDto.getCaption() == null || postUpdateDto.getCaption().equals("")) &&
+                    (postUpdateDto.getFiles() == null || postUpdateDto.getFiles().isEmpty())) {
                 throw new InvalidException(ErrorMessage.Post.ERR_INVALID);
             }
             else {
@@ -83,10 +83,9 @@ public class PostServiceImp implements PostService {
 
                 // Add new file
                 List<PostMedia> postMediaList = new ArrayList<>();
-                if (multipartFiles != null) {
-                    for (MultipartFile file : multipartFiles) {
-                        PostMediaCreateDto postMediaCreateDto = new PostMediaCreateDto(file);
-                        postMediaList.add(postMediaService.createNewPostMedia(post.getId(), postMediaCreateDto));
+                if (postUpdateDto.getFiles() != null && !postUpdateDto.getFiles().isEmpty()) {
+                    for (MultipartFile file : postUpdateDto.getFiles()) {
+                        postMediaList.add(postMediaService.createNewPostMedia(post.getId(), file));
                     }
                 }
                 post.setPostMedia(postMediaList);
@@ -121,13 +120,17 @@ public class PostServiceImp implements PostService {
 
     @Override
     public List<PostDto> findAllPostByUserId(String userId) {
+        userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException(ErrorMessage.User.ERR_NOT_FOUND_ID, new String[]{userId}));
         List<Post> posts = postRepository.findAllPostByUserId(userId);
         return postMapper.postsToPostDtos(posts);
     }
 
     @Override
-    public List<PostDto> findAllPost() {
-        List<Post> posts = postRepository.findAllPost();
+    public List<PostDto> findAllPost(String userId) {
+        userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException(ErrorMessage.User.ERR_NOT_FOUND_ID, new String[]{userId}));
+        List<Post> posts = postRepository.findAllPost(userId);
         return postMapper.postsToPostDtos(posts);
     }
 }

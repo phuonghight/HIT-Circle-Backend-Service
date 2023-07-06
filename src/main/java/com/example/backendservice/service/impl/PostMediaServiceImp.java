@@ -1,7 +1,6 @@
 package com.example.backendservice.service.impl;
 
 import com.example.backendservice.constant.ErrorMessage;
-import com.example.backendservice.domain.dto.request.PostMediaCreateDto;
 import com.example.backendservice.domain.dto.response.PostMediaDto;
 import com.example.backendservice.domain.entity.Post;
 import com.example.backendservice.domain.entity.PostMedia;
@@ -13,6 +12,7 @@ import com.example.backendservice.service.PostMediaService;
 import com.example.backendservice.util.UploadFileUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -26,11 +26,11 @@ public class PostMediaServiceImp implements PostMediaService {
     private final PostMediaRepository postMediaRepository;
 
     @Override
-    public PostMedia createNewPostMedia(String postId, PostMediaCreateDto postMediaCreateDto) {
+    public PostMedia createNewPostMedia(String postId, MultipartFile mediaFile) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new NotFoundException(ErrorMessage.Post.ERR_NOT_FOUND_ID, new String[]{postId}));
         PostMedia postMedia = new PostMedia();
-        postMedia.setMediaFile(uploadFileUtil.uploadFile(postMediaCreateDto.getMediaFile()));
+        postMedia.setMediaFile(uploadFileUtil.uploadFile(mediaFile));
         postMedia.setPost(post);
         return postMediaRepository.save(postMedia);
     }
@@ -45,6 +45,8 @@ public class PostMediaServiceImp implements PostMediaService {
 
     @Override
     public void deletePostMediaByPostId(String postId) {
+        postRepository.findById(postId)
+                .orElseThrow(() -> new NotFoundException(ErrorMessage.Post.ERR_NOT_FOUND_ID, new String[]{postId}));
         List<PostMedia> postMediaList = postMediaRepository.findAllPostMediaByPostId(postId);
         if (!postMediaList.isEmpty()) {
             for (PostMedia postMedia : postMediaList) {
@@ -63,6 +65,8 @@ public class PostMediaServiceImp implements PostMediaService {
 
     @Override
     public List<PostMedia> getAllPostMediaByPostId(String postId) {
+        postRepository.findById(postId)
+                .orElseThrow(() -> new NotFoundException(ErrorMessage.Post.ERR_NOT_FOUND_ID, new String[]{postId}));
         return postMediaRepository.findAllPostMediaByPostId(postId);
     }
 }

@@ -33,7 +33,7 @@ public interface PostMapper {
     }
 
     @Mappings({
-            @Mapping(target = "caption", source = "postUpdateDto.caption")
+            @Mapping(target = "caption", source = "postUpdateDto.caption", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.SET_TO_NULL)
     })
     void updatePost(@MappingTarget Post post, PostUpdateDto postUpdateDto);
 
