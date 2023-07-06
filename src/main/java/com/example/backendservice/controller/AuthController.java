@@ -3,6 +3,7 @@ package com.example.backendservice.controller;
 import com.example.backendservice.base.RestApiV1;
 import com.example.backendservice.base.VsResponseUtil;
 import com.example.backendservice.constant.UrlConstant;
+import com.example.backendservice.domain.dto.request.ForgotPasswordRequestDto;
 import com.example.backendservice.domain.dto.request.LoginRequestDto;
 import com.example.backendservice.domain.dto.request.UserCreateDto;
 import com.example.backendservice.service.AuthService;
@@ -43,6 +44,12 @@ public class AuthController {
   public ResponseEntity<?> logout(HttpServletRequest request,
                                   HttpServletResponse response, Authentication authentication) {
     return VsResponseUtil.success(authService.logout(request, response, authentication));
+  }
+
+  @Operation(summary = "API Forgot password")
+  @PostMapping(UrlConstant.Auth.RESET_PASSWORD)
+  public ResponseEntity<?> forgotPassword(@Valid @RequestBody ForgotPasswordRequestDto requestDto) {
+    return VsResponseUtil.success(authService.forgotPassword(requestDto));
   }
 
 }
