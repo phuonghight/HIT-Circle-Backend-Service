@@ -25,6 +25,7 @@ import com.example.backendservice.security.jwt.JwtTokenProvider;
 import com.example.backendservice.service.AuthService;
 import com.example.backendservice.util.RandomString;
 import com.example.backendservice.util.SendMailUtil;
+import com.example.backendservice.util.CheckLoginRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.*;
@@ -63,15 +64,29 @@ public class AuthServiceImpl implements AuthService {
   @Override
   public LoginResponseDto login(LoginRequestDto request) {
     try {
-      Authentication authentication = authenticationManager.authenticate(
-          new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
+      Authentication authentication = null;
+      if (CheckLoginRequest.isPhone(request.getAccount())) {
+        Optional<User> user = userRepository.findUserByPhone(request.getAccount());
+        if (user.isPresent()) {
+          authentication = authenticationManager.authenticate(
+                  new UsernamePasswordAuthenticationToken(user.get().getEmail(), request.getPassword()));
+        } else throw new UnauthorizedException(ErrorMessage.Auth.ERR_INCORRECT_ACCOUNT);
+      } else if (CheckLoginRequest.isEmail(request.getAccount())) {
+        authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(request.getAccount(), request.getPassword()));
+      }
+
+      if (authentication == null) {
+        throw new UnauthorizedException(ErrorMessage.Auth.ERR_INCORRECT_ACCOUNT);
+      }
+
       SecurityContextHolder.getContext().setAuthentication(authentication);
       UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
       String accessToken = jwtTokenProvider.generateToken(userPrincipal, Boolean.FALSE);
       String refreshToken = jwtTokenProvider.generateToken(userPrincipal, Boolean.TRUE);
       return new LoginResponseDto(accessToken, refreshToken, userPrincipal.getId(), authentication.getAuthorities());
     } catch (InternalAuthenticationServiceException e) {
-      throw new UnauthorizedException(ErrorMessage.Auth.ERR_INCORRECT_USERNAME);
+      throw new UnauthorizedException(ErrorMessage.Auth.ERR_INCORRECT_ACCOUNT);
     } catch (BadCredentialsException e) {
       throw new UnauthorizedException(ErrorMessage.Auth.ERR_INCORRECT_PASSWORD);
     }
@@ -84,16 +99,17 @@ public class AuthServiceImpl implements AuthService {
 
   @Override
   public UserDto register(UserCreateDto userCreateDto) {
-    Optional<User> findUserByUsername = userRepository.findByUsername(userCreateDto.getUsername());
-    Optional<User> findUserByStudentCode = userRepository.findUserByStudentCode(userCreateDto.getStudentCode());
-
-    if(!ObjectUtils.isEmpty(findUserByUsername)) {
+    if(userRepository.existsByEmail(userCreateDto.getEmail())) {
       throw new AlreadyExistException(ErrorMessage.User.ERR_ALREADY_EXIST_USER,
-              new String[]{"email: " + userCreateDto.getUsername()});
+              new String[]{"email: " + userCreateDto.getEmail()});
     }
-    if(!ObjectUtils.isEmpty(findUserByStudentCode)) {
+    if(userRepository.existsByUsername(userCreateDto.getUsername())) {
       throw new AlreadyExistException(ErrorMessage.User.ERR_ALREADY_EXIST_USER,
-              new String[]{"student code: " + userCreateDto.getStudentCode()});
+              new String[]{"username: " + userCreateDto.getUsername()});
+    }
+    if(userRepository.existsByPhone(userCreateDto.getPhone())) {
+      throw new AlreadyExistException(ErrorMessage.User.ERR_ALREADY_EXIST_USER,
+              new String[]{"phone: " + userCreateDto.getPhone()});
     }
 
     User user = userMapper.toUser(userCreateDto);
@@ -113,7 +129,7 @@ public class AuthServiceImpl implements AuthService {
 
   @Override
   public CommonResponseDto forgotPassword(ForgotPasswordRequestDto requestDto) {
-    User user = userRepository.findByUsername(requestDto.getEmail())
+    User user = userRepository.findUserByEmail(requestDto.getEmail())
             .orElseThrow(() -> {
               throw new NotFoundException(ErrorMessage.User.ERR_NOT_FOUND_USERNAME,
                       new String[]{requestDto.getEmail()});

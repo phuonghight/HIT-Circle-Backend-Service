@@ -71,18 +71,25 @@ public class UserServiceImpl implements UserService {
 
     userMapper.updateUser(user, userUpdateDto);
 
-    if (userUpdateDto.getUsername() != null) {
-      if (userRepository.findByUsername(userUpdateDto.getUsername()).isEmpty()) {
-        user.setUsername(userUpdateDto.getUsername());
+    if (userUpdateDto.getEmail() != null) {
+      if (!userRepository.existsByEmail(userUpdateDto.getEmail())) {
+        user.setEmail(userUpdateDto.getEmail());
       } else throw new AlreadyExistException(ErrorMessage.User.ERR_ALREADY_EXIST_USER,
-              new String[]{"email: " + userUpdateDto.getUsername()});
+              new String[]{"email: " + userUpdateDto.getEmail()});
     }
 
-    if (userUpdateDto.getStudentCode() != null) {
-      if (userRepository.findUserByStudentCode(userUpdateDto.getStudentCode()).isEmpty()) {
-        user.setStudentCode(userUpdateDto.getStudentCode());
+    if (userUpdateDto.getUsername() != null) {
+      if (!userRepository.existsByUsername(userUpdateDto.getUsername())) {
+        user.setUsername(userUpdateDto.getUsername());
       } else throw new AlreadyExistException(ErrorMessage.User.ERR_ALREADY_EXIST_USER,
-              new String[]{"student code: " + userUpdateDto.getStudentCode()});
+              new String[]{"username: " + userUpdateDto.getUsername()});
+    }
+
+    if (userUpdateDto.getPhone() != null) {
+      if (!userRepository.existsByPhone(userUpdateDto.getPhone())) {
+        user.setPhone(userUpdateDto.getPhone());
+      } else throw new AlreadyExistException(ErrorMessage.User.ERR_ALREADY_EXIST_USER,
+              new String[]{"phone: " + userUpdateDto.getPhone()});
     }
 
     if (userUpdateDto.getAvatar() != null) {
