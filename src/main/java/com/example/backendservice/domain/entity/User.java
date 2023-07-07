@@ -25,7 +25,7 @@ public class User extends DateAuditing {
   private String id;
 
   @Column(nullable = false, unique = true)
-  private String username;
+  private String email;
 
   @Column(nullable = false)
   @JsonIgnore
@@ -36,16 +36,16 @@ public class User extends DateAuditing {
   private String fullName;
 
   @Column(nullable = false, unique = true)
-  private String studentCode;
+  private String username;
 
-  @Column(nullable = false)
+  @Column(nullable = false, unique = true)
+  private String phone;
+
   private String gender;
 
   private String avatar;
 
   private LocalDate birthday;
-
-  private String phone;
 
   //Link to table Role
   @ManyToOne

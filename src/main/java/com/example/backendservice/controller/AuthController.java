@@ -3,10 +3,10 @@ package com.example.backendservice.controller;
 import com.example.backendservice.base.RestApiV1;
 import com.example.backendservice.base.VsResponseUtil;
 import com.example.backendservice.constant.UrlConstant;
+import com.example.backendservice.domain.dto.request.ForgotPasswordRequestDto;
 import com.example.backendservice.domain.dto.request.LoginRequestDto;
 import com.example.backendservice.domain.dto.request.UserCreateDto;
 import com.example.backendservice.service.AuthService;
-import com.example.backendservice.validator.annotation.ValidFileImage;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +15,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -45,6 +44,12 @@ public class AuthController {
   public ResponseEntity<?> logout(HttpServletRequest request,
                                   HttpServletResponse response, Authentication authentication) {
     return VsResponseUtil.success(authService.logout(request, response, authentication));
+  }
+
+  @Operation(summary = "API Forgot password")
+  @PostMapping(UrlConstant.Auth.RESET_PASSWORD)
+  public ResponseEntity<?> forgotPassword(@Valid @RequestBody ForgotPasswordRequestDto requestDto) {
+    return VsResponseUtil.success(authService.forgotPassword(requestDto));
   }
 
 }

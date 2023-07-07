@@ -4,6 +4,7 @@ import com.example.backendservice.base.RestApiV1;
 import com.example.backendservice.base.VsResponseUtil;
 import com.example.backendservice.constant.UrlConstant;
 import com.example.backendservice.domain.dto.pagination.PaginationFullRequestDto;
+import com.example.backendservice.domain.dto.request.ChangePasswordRequestDto;
 import com.example.backendservice.domain.dto.pagination.PaginationSortRequestDto;
 import com.example.backendservice.domain.dto.request.FollowRequestDto;
 import com.example.backendservice.domain.dto.request.UserUpdateDto;
@@ -57,6 +58,15 @@ public class UserController {
                                          @Parameter(name = "user", hidden = true)
                                          @CurrentUser UserPrincipal user) {
     return VsResponseUtil.success(userService.updateProfile(user.getId(), userUpdateDto));
+  }
+
+  @Tag(name = "user-controller")
+  @Operation(summary = "API change user's password")
+  @PostMapping(value = UrlConstant.User.CHANGE_PASSWORD)
+  public ResponseEntity<?> changePassword(@Valid @RequestBody ChangePasswordRequestDto passwordRequestDto,
+                                          @Parameter(name = "user", hidden = true)
+                                         @CurrentUser UserPrincipal user) {
+    return VsResponseUtil.success(userService.changePassword(user.getId(), passwordRequestDto));
   }
 
   @Tag(name = "user-controller")
