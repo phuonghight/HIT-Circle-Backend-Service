@@ -5,6 +5,8 @@ import com.example.backendservice.base.VsResponseUtil;
 import com.example.backendservice.constant.UrlConstant;
 import com.example.backendservice.domain.dto.pagination.PaginationFullRequestDto;
 import com.example.backendservice.domain.dto.request.ChangePasswordRequestDto;
+import com.example.backendservice.domain.dto.pagination.PaginationSortRequestDto;
+import com.example.backendservice.domain.dto.request.FollowRequestDto;
 import com.example.backendservice.domain.dto.request.UserUpdateDto;
 import com.example.backendservice.security.CurrentUser;
 import com.example.backendservice.security.UserPrincipal;
@@ -58,7 +60,6 @@ public class UserController {
     return VsResponseUtil.success(userService.updateProfile(user.getId(), userUpdateDto));
   }
 
-  // Update user's profile (user can update your profile)
   @Tag(name = "user-controller")
   @Operation(summary = "API change user's password")
   @PostMapping(value = UrlConstant.User.CHANGE_PASSWORD)
@@ -66,6 +67,26 @@ public class UserController {
                                           @Parameter(name = "user", hidden = true)
                                          @CurrentUser UserPrincipal user) {
     return VsResponseUtil.success(userService.changePassword(user.getId(), passwordRequestDto));
+  }
+
+  @Tag(name = "user-controller")
+  @Operation(summary = "API get users have been following target user")
+  @GetMapping(value = UrlConstant.User.GET_FOLLOWERS)
+  public ResponseEntity<?> getFollowers(@Parameter(name = "user", hidden = true)
+                                         @CurrentUser UserPrincipal user,
+                                        @Valid @ParameterObject PaginationSortRequestDto paginationSortRequestDto,
+                                        @Valid @RequestBody FollowRequestDto followRequestDto) {
+    return VsResponseUtil.success(userService.getFollowers(paginationSortRequestDto, followRequestDto));
+  }
+
+  @Tag(name = "user-controller")
+  @Operation(summary = "API get users that target user have been following")
+  @GetMapping(value = UrlConstant.User.GET_FOLLOWING)
+  public ResponseEntity<?> getFollowing(@Parameter(name = "user", hidden = true)
+                                        @CurrentUser UserPrincipal user,
+                                        @Valid @ParameterObject PaginationSortRequestDto paginationSortRequestDto,
+                                        @Valid @RequestBody FollowRequestDto followRequestDto) {
+    return VsResponseUtil.success(userService.getFollowing(paginationSortRequestDto, followRequestDto));
   }
 
 }

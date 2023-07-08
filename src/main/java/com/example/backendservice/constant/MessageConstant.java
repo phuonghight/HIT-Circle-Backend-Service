@@ -11,4 +11,7 @@ public class MessageConstant {
     public static final String RESET_PASSWORD = "Please check your email to get new password";
     public static final String SUBJECT_MAIL_RESET_PASSWORD = "Reset your password for " +
             CommonConstant.APP_NAME;
+
+    public static String UNFOLLOW_SUCCESSFULLY = "You just unfollowed ";
+
 }

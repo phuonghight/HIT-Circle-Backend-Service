@@ -23,6 +23,9 @@ public class UrlConstant {
     public static final String UPDATE_USER = PRE_FIX;
     public static final String CHANGE_PASSWORD = PRE_FIX + "/change-password";
 
+    public static final String GET_FOLLOWERS = PRE_FIX + "/followers";
+    public static final String GET_FOLLOWING = PRE_FIX + "/following";
+
     private User() {
     }
   }
