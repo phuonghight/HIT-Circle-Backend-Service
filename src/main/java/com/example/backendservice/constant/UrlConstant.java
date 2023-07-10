@@ -59,4 +59,15 @@ public class UrlConstant {
     }
   }
 
+  public static class Reaction {
+    private static final String PRE_FIX = "/reaction";
+    public static final String CREATE_UPDATE_REACTION = PRE_FIX;
+    public static final String REMOVE_REACTION = PRE_FIX;
+    public static final String GET_MY_REACTION = PRE_FIX + "/my";
+    public static final String GET_USER_REACTION = PRE_FIX + "/user";
+    public static final String GET_ALL_REACTION = PRE_FIX + "/get_all";
+    private Reaction() {
+    }
+  }
+
 }

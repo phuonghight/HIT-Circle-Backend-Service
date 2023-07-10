@@ -48,4 +48,8 @@ public class ErrorMessage {
   public static class PostMedia {
     public static final String ERR_NOT_FOUND_ID = "exception.postmedia.not.found.id";
   }
+
+  public static class Reaction {
+    public static final String ERR_NOT_FOUND = "exception.reaction.not.found";
+  }
 }

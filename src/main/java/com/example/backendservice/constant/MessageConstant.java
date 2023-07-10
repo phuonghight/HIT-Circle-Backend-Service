@@ -13,5 +13,6 @@ public class MessageConstant {
             CommonConstant.APP_NAME;
 
     public static String UNFOLLOW_SUCCESSFULLY = "You just unfollowed ";
+    public static final String REMOVE_REACTION_SUCCESSFUL = "You removed the reaction: ";
 
 }
