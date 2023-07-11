@@ -14,7 +14,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
+
+import javax.validation.Valid;
 
 @RequiredArgsConstructor
 @RestApiV1
@@ -25,7 +26,7 @@ public class PostController {
     @Tag(name = "post-controller")
     @Operation(summary = "API create new post")
     @PostMapping( value = UrlConstant.Post.CREATE_POST)
-    public ResponseEntity<?> createNewPost(@ModelAttribute PostCreateDto postCreateDto,
+    public ResponseEntity<?> createNewPost(@Valid @ModelAttribute PostCreateDto postCreateDto,
                                            @Parameter(name = "user", hidden = true)
                                            @CurrentUser UserPrincipal user    ) {
         return VsResponseUtil.success(postService.createNewPost(postCreateDto, user.getId() ));
@@ -40,7 +41,7 @@ public class PostController {
     @Operation(summary = "API update post")
     @PatchMapping( value = UrlConstant.Post.UPDATE_POST)
     public ResponseEntity<?> updatePostById(@PathVariable String postId,
-                                            @ModelAttribute PostUpdateDto postUpdateDto,
+                                            @Valid @ModelAttribute PostUpdateDto postUpdateDto,
                                             @Parameter(name = "user", hidden = true)
                                             @CurrentUser UserPrincipal user    ) {
         return VsResponseUtil.success(postService.updatePostById( postId, postUpdateDto, user.getId()));

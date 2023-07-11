@@ -10,7 +10,7 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 @Mapper(componentModel = "spring", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface PostMediaMapper {
     @Mappings({
-            @Mapping(target = "postId", source = "postMedia.post.id")
+            @Mapping(target = "postId", source = "post.id")
     })
     PostMediaDto postMediaToPostMediaDto(PostMedia postMedia);
 }

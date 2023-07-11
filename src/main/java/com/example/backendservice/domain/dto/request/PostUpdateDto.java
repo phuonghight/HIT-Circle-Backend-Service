@@ -1,5 +1,6 @@
 package com.example.backendservice.domain.dto.request;
 
+import com.example.backendservice.validator.annotation.ValidListFile;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,5 +15,6 @@ import java.util.List;
 @Getter
 public class PostUpdateDto {
     private String caption;
+    @ValidListFile
     private List<MultipartFile> files;
 }
