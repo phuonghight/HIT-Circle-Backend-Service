@@ -48,4 +48,9 @@ public class ErrorMessage {
   public static class PostMedia {
     public static final String ERR_NOT_FOUND_ID = "exception.postmedia.not.found.id";
   }
+
+  public static class Conversation {
+    public static final String ERR_NOT_FOUND = "exception.conversation.not.found";
+  }
+
 }

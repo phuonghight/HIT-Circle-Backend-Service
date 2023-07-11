@@ -59,4 +59,14 @@ public class UrlConstant {
     }
   }
 
+  public static class Conversation {
+    private static final String PRE_FIX = "/conversation";
+
+    public static final String GET_CONVERSATION = PRE_FIX + "/{id}";
+    public static final String GET_CONVERSATIONS_OF_ME = PRE_FIX + "/me";
+    public static final String GET_CONVERSATION_OF_ME_AND_ONE = PRE_FIX + "/me/{userId}";
+
+    private Conversation() {}
+  }
+
 }

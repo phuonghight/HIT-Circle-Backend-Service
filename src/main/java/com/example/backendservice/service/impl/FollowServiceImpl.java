@@ -10,10 +10,12 @@ import com.example.backendservice.domain.mapper.FollowMapper;
 import com.example.backendservice.exception.AlreadyExistException;
 import com.example.backendservice.exception.NotFoundException;
 import com.example.backendservice.repository.FollowRepository;
+import com.example.backendservice.service.ConversationService;
 import com.example.backendservice.service.FollowService;
 import com.example.backendservice.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -27,6 +29,9 @@ public class FollowServiceImpl implements FollowService {
 
     private final UserService userService;
 
+    private final ConversationService conversationService;
+
+    @Transactional
     @Override
     public FollowResponseDto follow(String currentUserId, String toUserId) {
         User fromUser = userService.getUserById(currentUserId);
@@ -41,6 +46,12 @@ public class FollowServiceImpl implements FollowService {
 
         Follow follow = new Follow(fromUser, toUser);
         followRepository.save(follow);
+
+        // Nếu thằng mình vừa follow đã follow mình => tạo cuộc hội thoại
+        Optional<Follow> f = followRepository.findFollowByFromIdAndToId(toUserId, currentUserId);
+        if (f.isPresent()) {
+            conversationService.creatNewConversation(currentUserId, toUserId);
+        }
 
         return followMapper.toResponseDto(follow);
     }
