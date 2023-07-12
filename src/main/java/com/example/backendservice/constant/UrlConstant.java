@@ -70,4 +70,12 @@ public class UrlConstant {
     private Conversation() {}
   }
 
+  public static class Message {
+    private static final String PRE_FIX = "/message";
+
+    public static final String GET_MESSAGES_BY_CONVERSATION = PRE_FIX + "/{conversationId}";
+
+    private Message() {}
+  }
+
 }
