@@ -16,6 +16,8 @@ public @interface ValidListFile {
 
     String fileTypeNotAllowedMessage() default "invalid.file.type";
 
+    String fileSizeExceededMessage() default "invalid.file.size";
+
     Class<?>[] groups() default {};
 
     Class<? extends Payload>[] payload() default {};

@@ -10,10 +10,12 @@ import java.util.List;
 
 public class ListFileValidator implements ConstraintValidator<ValidListFile, List<MultipartFile>> {
     private String fileTypeNotAllowedMessage;
+    private String fileSizeExceededMessage;
 
     @Override
     public void initialize(ValidListFile constraintAnnotation) {
         this.fileTypeNotAllowedMessage = constraintAnnotation.fileTypeNotAllowedMessage();
+        this.fileSizeExceededMessage = constraintAnnotation.fileSizeExceededMessage();
     }
 
     @Override
@@ -28,6 +30,13 @@ public class ListFileValidator implements ConstraintValidator<ValidListFile, Lis
             if (contentType == null || !isSupportedContentType(contentType)) {
                 constraintValidatorContext.disableDefaultConstraintViolation();
                 constraintValidatorContext.buildConstraintViolationWithTemplate(fileTypeNotAllowedMessage)
+                        .addConstraintViolation();
+                return false;
+            }
+            if ((contentType.startsWith("image/") && file.getSize() > CommonConstant.MAX_IMAGE_SIZE_BYTES) ||
+                    file.getSize() > CommonConstant.MAX_VIDEO_SIZE_BYTES) {
+                constraintValidatorContext.disableDefaultConstraintViolation();
+                constraintValidatorContext.buildConstraintViolationWithTemplate(fileSizeExceededMessage)
                         .addConstraintViolation();
                 return false;
             }

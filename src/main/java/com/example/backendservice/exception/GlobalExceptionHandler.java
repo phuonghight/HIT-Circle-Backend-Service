@@ -129,7 +129,7 @@ public class GlobalExceptionHandler {
   @ExceptionHandler(MaxUploadSizeExceededException.class)
   public ResponseEntity<RestData<?>> handleMaxUploadSizeExceeded(MaxUploadSizeExceededException ex) {
     log.error(ex.getMessage(), ex);
-    String message = messageSource.getMessage(ErrorMessage.ERR_EXCEPTION_MAX_UPLOAD_FILE, null,
+    String message = messageSource.getMessage(ErrorMessage.ERR_EXCEPTION_MAX_UPLOAD_FILE_SIZE, null,
             LocaleContextHolder.getLocale());
     return VsResponseUtil.error(HttpStatus.BAD_REQUEST, message);
   }

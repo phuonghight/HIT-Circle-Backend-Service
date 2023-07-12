@@ -6,7 +6,7 @@ public class ErrorMessage {
   public static final String UNAUTHORIZED = "exception.unauthorized";
   public static final String FORBIDDEN = "exception.forbidden";
   public static final String FORBIDDEN_UPDATE_DELETE = "exception.forbidden.update-delete";
-  public static final String ERR_EXCEPTION_MAX_UPLOAD_FILE = "exception.max.upload.file";
+  public static final String ERR_EXCEPTION_MAX_UPLOAD_FILE_SIZE = "exception.max.upload.file.size";
   public static final String ERR_EXCEPTION_MULTIPART = "exception.multipart";
 
   //error validation dto

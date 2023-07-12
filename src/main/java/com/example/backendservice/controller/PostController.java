@@ -57,10 +57,10 @@ public class PostController {
     }
 
     @Tag(name = "post-controller")
-    @Operation(summary = "API get all post by user id")
+    @Operation(summary = "API get all post by username")
     @GetMapping( value = UrlConstant.Post.GET_MY_POST)
-    public ResponseEntity<?> findAllPostByUserId(@PathVariable String userId) {
-        return VsResponseUtil.success(postService.findAllPostByUserId(userId));
+    public ResponseEntity<?> findAllPostByUsername(@PathVariable String username) {
+        return VsResponseUtil.success(postService.findAllPostByUsername(username));
     }
 
     @Tag(name = "post-controller")
