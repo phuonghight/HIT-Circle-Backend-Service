@@ -31,6 +31,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -172,6 +173,31 @@ public class UserServiceImpl implements UserService {
             followPage);
 
     return new PaginationResponseDto<>(meta, userMapper.toUserDtos(following));
+  }
+
+  @Override
+  public PaginationResponseDto<UserDto> getFriends(PaginationFullRequestDto paginationFullRequestDto,
+                                                   String userId) {
+    Pageable pageable = PaginationUtil
+            .buildPageable(paginationFullRequestDto, SortByDataConstant.Follow);
+
+    Page<Follow> followingPage = followRepository.findFollowsByFromId(userId, pageable);
+
+    List<User> friends = new ArrayList<>();
+
+    for (Follow follow : followingPage.getContent()) {
+      Optional<Follow> findFollowByFromAndTo = followRepository
+              .findFollowByFromIdAndToId(follow.getTo().getId(), userId);
+      if (findFollowByFromAndTo.isPresent()) {
+        friends.add(this.getUserById(follow.getTo().getId()));
+      }
+    }
+
+    PagingMeta meta = PaginationUtil.buildPagingMeta(paginationFullRequestDto,
+            SortByDataConstant.Follow,
+            followingPage);
+
+    return new PaginationResponseDto<>(meta, userMapper.toUserDtos(friends));
   }
 
 }

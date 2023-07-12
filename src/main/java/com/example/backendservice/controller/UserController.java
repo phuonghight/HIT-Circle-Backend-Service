@@ -89,4 +89,13 @@ public class UserController {
     return VsResponseUtil.success(userService.getFollowing(paginationSortRequestDto, followRequestDto));
   }
 
+  @Tag(name = "user-controller")
+  @Operation(summary = "API get my friends")
+  @GetMapping(value = UrlConstant.User.GET_FRIENDS)
+  public ResponseEntity<?> getFriends(@Parameter(name = "user", hidden = true)
+                                        @CurrentUser UserPrincipal user,
+                                        @Valid @ParameterObject PaginationFullRequestDto paginationFullRequestDto) {
+    return VsResponseUtil.success(userService.getFriends(paginationFullRequestDto, user.getId()));
+  }
+
 }
