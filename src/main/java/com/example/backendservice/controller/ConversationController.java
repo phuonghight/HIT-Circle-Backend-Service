@@ -27,17 +27,17 @@ public class ConversationController {
     @Tag(name = "conversation-controller")
     @Operation(summary = "API get conversation by id")
     @GetMapping(UrlConstant.Conversation.GET_CONVERSATION)
-    public ResponseEntity<?> getUserById(@PathVariable String id) {
+    public ResponseEntity<?> getConversationDtoById(@PathVariable String id) {
         return VsResponseUtil.success(conversationService.getConversationDtoById(id));
     }
 
     @Tag(name = "conversation-controller")
     @Operation(summary = "API get conversation of me and one guy")
     @GetMapping(UrlConstant.Conversation.GET_CONVERSATION_OF_ME_AND_ONE)
-    public ResponseEntity<?> getConversationByMeAndSecondUserName(@PathVariable String userId,
+    public ResponseEntity<?> getConversationByMeAndSecondUserId(@PathVariable String userId,
                                          @Parameter(name = "user", hidden = true)
                                          @CurrentUser UserPrincipal user) {
-        return VsResponseUtil.success(conversationService.getConversationByMeAndSecondUserName(user.getId(), userId));
+        return VsResponseUtil.success(conversationService.getConversationByMeAndSecondUserId(user.getId(), userId));
     }
 
     @Tag(name = "conversation-controller")

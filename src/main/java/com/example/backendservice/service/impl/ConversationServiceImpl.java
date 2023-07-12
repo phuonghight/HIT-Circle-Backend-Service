@@ -51,10 +51,10 @@ public class ConversationServiceImpl implements ConversationService {
     }
 
     @Override
-    public ConversationDto getConversationByMeAndSecondUserName(String currentUserId, String secondUserId) {
+    public ConversationDto getConversationByMeAndSecondUserId(String currentUserId, String secondUserId) {
         User secondUser = userService.getUserById(secondUserId);
         Conversation conversation = conversationRepository
-                .getConversationByMeAndSecondId(currentUserId, secondUserId)
+                .getConversationByMeAndSecondUserId(currentUserId, secondUserId)
                 .orElseThrow(() -> {
                     throw new NotFoundException(ErrorMessage.Conversation.ERR_NOT_FOUND,
                             new String[]{"you and " + secondUser.getUsername()});

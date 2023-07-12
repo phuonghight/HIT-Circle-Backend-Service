@@ -18,7 +18,7 @@ public interface ConversationRepository extends JpaRepository<Conversation, Stri
     @Query(value = "SELECT c.* FROM conversations c " +
             "WHERE (c.first_user_id = ?1 AND c.second_user_id = ?2) " +
             "OR (c.first_user_id = ?2 AND c.second_user_id = ?1)", nativeQuery = true)
-    Optional<Conversation> getConversationByMeAndSecondId(String myUsername, String secondUserUsername);
+    Optional<Conversation> getConversationByMeAndSecondUserId(String myUsername, String secondUserUsername);
 
     @Query(value = "SELECT * FROM conversations c WHERE c.first_user_id = ?1 OR c.second_user_id = ?1",
             nativeQuery = true)

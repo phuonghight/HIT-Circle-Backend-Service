@@ -11,7 +11,7 @@ public interface ConversationService {
 
     ConversationDto getConversationDtoById(String id);
 
-    ConversationDto getConversationByMeAndSecondUserName(String currentUserId, String secondUserId);
+    ConversationDto getConversationByMeAndSecondUserId(String currentUserId, String secondUserId);
 
     ConversationDto creatNewConversation(String firstUserId, String secondUserId);
 

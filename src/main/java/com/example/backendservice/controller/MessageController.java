@@ -27,7 +27,7 @@ public class MessageController {
     @Tag(name = "message-controller")
     @Operation(summary = "API get message by conversation id")
     @GetMapping(value = UrlConstant.Message.GET_MESSAGES_BY_CONVERSATION)
-    public ResponseEntity<?> getFriends(@Valid @ParameterObject PaginationFullRequestDto paginationFullRequestDto,
+    public ResponseEntity<?> getMessagesByConversationId(@Valid @ParameterObject PaginationFullRequestDto paginationFullRequestDto,
                                         @PathVariable String conversationId) {
         return VsResponseUtil.success(messageService
                 .getMessagesByConversationId(paginationFullRequestDto, conversationId));
