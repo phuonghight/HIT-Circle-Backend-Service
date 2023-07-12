@@ -6,7 +6,7 @@ import com.example.backendservice.domain.dto.response.ConversationDto;
 
 public interface ConversationService {
 
-    ConversationDto getConversationById(String id, String userId);
+    ConversationDto getConversationById(String id);
 
     ConversationDto getConversationByMeAndSecondUserName(String currentUserId, String secondUserId);
 

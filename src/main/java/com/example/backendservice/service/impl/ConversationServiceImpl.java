@@ -32,7 +32,7 @@ public class ConversationServiceImpl implements ConversationService {
     private final UserService userService;
 
     @Override
-    public ConversationDto getConversationById(String id, String userId) {
+    public ConversationDto getConversationById(String id) {
         Conversation conversation = conversationRepository.getConversationById(id)
                 .orElseThrow(() -> {
                     throw new NotFoundException(ErrorMessage.Conversation.ERR_NOT_FOUND, new String[]{"id: " + id});
