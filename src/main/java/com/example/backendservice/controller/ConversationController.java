@@ -28,7 +28,7 @@ public class ConversationController {
     @Operation(summary = "API get conversation by id")
     @GetMapping(UrlConstant.Conversation.GET_CONVERSATION)
     public ResponseEntity<?> getUserById(@PathVariable String id) {
-        return VsResponseUtil.success(conversationService.getConversationById(id));
+        return VsResponseUtil.success(conversationService.getConversationDtoById(id));
     }
 
     @Tag(name = "conversation-controller")

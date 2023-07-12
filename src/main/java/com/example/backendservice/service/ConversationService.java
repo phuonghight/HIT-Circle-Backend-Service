@@ -3,10 +3,13 @@ package com.example.backendservice.service;
 import com.example.backendservice.domain.dto.pagination.PaginationFullRequestDto;
 import com.example.backendservice.domain.dto.pagination.PaginationResponseDto;
 import com.example.backendservice.domain.dto.response.ConversationDto;
+import com.example.backendservice.domain.entity.Conversation;
 
 public interface ConversationService {
 
-    ConversationDto getConversationById(String id);
+    Conversation getConversationById(String id);
+
+    ConversationDto getConversationDtoById(String id);
 
     ConversationDto getConversationByMeAndSecondUserName(String currentUserId, String secondUserId);
 
