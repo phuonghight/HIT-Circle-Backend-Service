@@ -59,4 +59,13 @@ public class UrlConstant {
     }
   }
 
+  public static class Message {
+    private static final String PRE_FIX = "/message";
+
+    public static final String SEND_MESSAGE_TO_OTHER = PRE_FIX;
+    public static final String GET_MESSAGES_BY_OTHER_BY_ID = PRE_FIX + "/me/{otherId}";
+
+    private Message() {}
+  }
+
 }
