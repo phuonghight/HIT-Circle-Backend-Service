@@ -43,6 +43,11 @@ public class SocketIOEventException implements ExceptionListener {
     }
 
     @Override
+    public void onPongException(Exception e, SocketIOClient socketIOClient) {
+        log.error(e.getMessage(), e);
+    }
+
+    @Override
     public boolean exceptionCaught(ChannelHandlerContext ctx, Throwable e) throws Exception {
         log.error(e.getMessage(), e);
         return true;
