@@ -20,6 +20,7 @@ public class Reaction extends UserDateAuditing {
     @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
     @Column(insertable = false, updatable = false, nullable = false, columnDefinition = "CHAR(36)")
     private String id;
+    @Column(nullable = false)
     private String name;
     @ManyToOne
     @JsonIgnore

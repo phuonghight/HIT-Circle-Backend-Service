@@ -62,4 +62,11 @@ public class ReactionController {
     public ResponseEntity<?> getAllReactionByPostId(@RequestParam String postId) {
         return VsResponseUtil.success(reactionService.findAllReactionByPostId(postId));
     }
+
+    @Tag(name = "reaction-controller")
+    @Operation(summary = "API get all reaction by type")
+    @GetMapping( value = UrlConstant.Reaction.GET_ALL_BY_TYPE_REACTION)
+    public ResponseEntity<?> getAllReactionByReactionName(@Valid @RequestBody ReactionRequestDto reactionRequestDto) {
+        return VsResponseUtil.success(reactionService.findAllReactionByReactionName(reactionRequestDto));
+    }
 }

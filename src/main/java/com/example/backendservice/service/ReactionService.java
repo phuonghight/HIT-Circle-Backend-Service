@@ -12,4 +12,5 @@ public interface ReactionService {
     CommonResponseDto removeReact(String userId, String postId);
     ReactionDto findReactionByUserIdAndPostId(String userId, String postId);
     List<ReactionDto> findAllReactionByPostId(String postId);
+    List<ReactionDto> findAllReactionByReactionName(ReactionRequestDto reactionRequestDto);
 }

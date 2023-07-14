@@ -14,4 +14,5 @@ public interface PostService {
     String deletePostById(String postId,String userId);
     List<PostDto> findAllPostByUserId(String userId);
     List<PostDto> findAllPost(String userId);
+    List<PostDto> findAllPostMyReaction(String userId);
 }

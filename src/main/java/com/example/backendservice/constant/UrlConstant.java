@@ -47,7 +47,7 @@ public class UrlConstant {
     public static final String DELETE_POST = PRE_FIX + "/{postId}";
     public static final String GET_MY_POST = PRE_FIX + "/get_all/{userId}";
     public static final String GET_ALL_POST = PRE_FIX + "/get_all";
-
+    public static final String GET_ALL_POST_MY_REACTION = PRE_FIX + "/get_all_my_react";
     private Post() {
     }
   }
@@ -63,9 +63,10 @@ public class UrlConstant {
     private static final String PRE_FIX = "/reaction";
     public static final String CREATE_UPDATE_REACTION = PRE_FIX;
     public static final String REMOVE_REACTION = PRE_FIX;
-    public static final String GET_MY_REACTION = PRE_FIX + "/my";
+    public static final String GET_MY_REACTION = PRE_FIX + "/me";
     public static final String GET_USER_REACTION = PRE_FIX + "/user";
     public static final String GET_ALL_REACTION = PRE_FIX + "/get_all";
+    public static final String GET_ALL_BY_TYPE_REACTION = PRE_FIX + "/get_all_by_type";
     private Reaction() {
     }
   }

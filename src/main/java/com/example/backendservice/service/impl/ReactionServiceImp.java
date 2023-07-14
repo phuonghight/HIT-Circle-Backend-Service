@@ -76,4 +76,12 @@ public class ReactionServiceImp implements ReactionService {
         List<Reaction> reactions = reactionRepository.findAllByPostId(postId);
         return reactionMapper.reactionsToReactionDtos(reactions);
     }
+
+    @Override
+    public List<ReactionDto> findAllReactionByReactionName(ReactionRequestDto reactionRequestDto) {
+        postRepository.findById(reactionRequestDto.getPostId())
+                .orElseThrow(() -> new NotFoundException(ErrorMessage.Post.ERR_NOT_FOUND_ID, new String[]{reactionRequestDto.getPostId()}));
+        List<Reaction> reactions = reactionRepository.findAllByReactionName(reactionRequestDto.getName(), reactionRequestDto.getPostId());
+        return reactionMapper.reactionsToReactionDtos(reactions);
+    }
 }

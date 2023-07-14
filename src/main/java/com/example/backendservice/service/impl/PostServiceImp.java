@@ -133,4 +133,12 @@ public class PostServiceImp implements PostService {
         List<Post> posts = postRepository.findAllPost(userId);
         return postMapper.postsToPostDtos(posts);
     }
+
+    @Override
+    public List<PostDto> findAllPostMyReaction(String userId) {
+        userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException(ErrorMessage.User.ERR_NOT_FOUND_ID, new String[]{userId}));
+        List<Post> posts = postRepository.findAllPostMyReaction(userId);
+        return postMapper.postsToPostDtos(posts);
+    }
 }

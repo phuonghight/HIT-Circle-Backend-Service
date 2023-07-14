@@ -13,4 +13,6 @@ public interface ReactionRepository extends JpaRepository<Reaction, String> {
     Reaction findByUserIdAndPostId(String userId, String postId);
     @Query(value = "SELECT * FROM reactions u WHERE u.post_id = ?1", nativeQuery = true)
     List<Reaction> findAllByPostId(String postId);
+    @Query(value = "SELECT * FROM reactions u WHERE u.name = ?1 AND u.post_id = ?2", nativeQuery = true)
+    List<Reaction> findAllByReactionName(String name, String postId);
 }
