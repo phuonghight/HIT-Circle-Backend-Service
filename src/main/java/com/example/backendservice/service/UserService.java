@@ -31,4 +31,6 @@ public interface UserService {
   PaginationResponseDto<UserDto> getFollowing(PaginationSortRequestDto paginationSortRequestDto,
                                               FollowRequestDto followRequestDto);
 
+  PaginationResponseDto<UserDto> getFriendsById(PaginationFullRequestDto paginationFullRequestDto, String meId);
+
 }
