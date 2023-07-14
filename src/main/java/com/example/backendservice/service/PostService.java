@@ -13,6 +13,7 @@ public interface PostService {
     Post getPostById(String postId);
     PostDto updatePostById(String postId, PostUpdateDto postUpdateDto, String userId);
     CommonResponseDto deletePostById(String postId, String userId);
+    List<PostDto> findAllPostByUserId(String userId);
     List<PostDto> findAllPostByUsername(String username);
     List<PostDto> findAllPost(String userId);
 }

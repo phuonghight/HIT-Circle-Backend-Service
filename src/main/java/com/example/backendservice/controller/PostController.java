@@ -57,8 +57,15 @@ public class PostController {
     }
 
     @Tag(name = "post-controller")
+    @Operation(summary = "API get all post by user id")
+    @GetMapping( value = UrlConstant.Post.GET_ALL_POST_BY_USER_ID)
+    public ResponseEntity<?> findAllPostByUserId(@PathVariable String userId) {
+        return VsResponseUtil.success(postService.findAllPostByUserId(userId));
+    }
+
+    @Tag(name = "post-controller")
     @Operation(summary = "API get all post by username")
-    @GetMapping( value = UrlConstant.Post.GET_MY_POST)
+    @GetMapping( value = UrlConstant.Post.GET_ALL_POST_BY_USERNAME)
     public ResponseEntity<?> findAllPostByUsername(@PathVariable String username) {
         return VsResponseUtil.success(postService.findAllPostByUsername(username));
     }
