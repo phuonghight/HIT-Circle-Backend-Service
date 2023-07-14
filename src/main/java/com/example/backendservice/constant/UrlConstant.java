@@ -45,7 +45,8 @@ public class UrlConstant {
     public static final String GET_POST = PRE_FIX + "/{postId}";
     public static final String UPDATE_POST = PRE_FIX + "/{postId}";
     public static final String DELETE_POST = PRE_FIX + "/{postId}";
-    public static final String GET_MY_POST = PRE_FIX + "/get_all/{userId}";
+    public static final String GET_ALL_POST_BY_USER_ID = PRE_FIX + "/get_all_by_user_id/{userId}";
+    public static final String GET_ALL_POST_BY_USERNAME = PRE_FIX + "/get_all_by_username/{username}";
     public static final String GET_ALL_POST = PRE_FIX + "/get_all";
 
     private Post() {
