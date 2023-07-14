@@ -19,6 +19,9 @@ public interface PostRepository extends JpaRepository<Post, String> {
     @Query(value = "SELECT * FROM posts u WHERE u.user_id = ?1 ORDER BY u.created_date DESC", nativeQuery = true)
     List<Post> findAllPostByUserId(String userId);
     @Query(value = "SELECT posts.* FROM posts " +
+            "INNER JOIN reactions ON posts.id = reactions.post_id " +
+            "WHERE reactions.user_id = ?1", nativeQuery = true)
+    List<Post> findAllPostMyReaction(String userId);
             "INNER JOIN users ON posts.user_id = users.id " +
             "WHERE users.username = ?1 " +
             "ORDER BY posts.created_date DESC", nativeQuery = true)

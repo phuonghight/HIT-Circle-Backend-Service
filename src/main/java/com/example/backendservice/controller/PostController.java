@@ -78,4 +78,11 @@ public class PostController {
         return VsResponseUtil.success(postService.findAllPost(user.getId()));
     }
 
+    @Tag(name = "post-controller")
+    @Operation(summary = "API get all post my reaction")
+    @GetMapping( value = UrlConstant.Post.GET_ALL_POST_MY_REACTION)
+    public ResponseEntity<?> findAllPostMyReaction(@Parameter(name = "user", hidden = true)
+                                         @CurrentUser UserPrincipal user) {
+        return VsResponseUtil.success(postService.findAllPostMyReaction(user.getId()));
+    }
 }

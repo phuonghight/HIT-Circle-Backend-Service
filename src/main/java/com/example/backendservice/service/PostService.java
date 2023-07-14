@@ -16,4 +16,5 @@ public interface PostService {
     List<PostDto> findAllPostByUserId(String userId);
     List<PostDto> findAllPostByUsername(String username);
     List<PostDto> findAllPost(String userId);
+    List<PostDto> findAllPostMyReaction(String userId);
 }
