@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface MessageRepository extends JpaRepository<Message, String> {
 
-    @Query(value = "SELECT * FROM messages s WHERE s.sender_id=?1 AND s.receiver_id=?2", nativeQuery = true)
+    @Query(value = "SELECT * FROM messages s WHERE (s.sender_id=?1 AND s.receiver_id=?2) " +
+            "OR (s.receiver_id=?1 AND s.sender_id=?2)", nativeQuery = true)
     Page<Message> getMessagesBySenderIdAndReceiverId(String senderId, String receiverId, Pageable pageable);
 }
