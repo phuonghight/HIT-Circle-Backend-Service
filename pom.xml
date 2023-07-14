@@ -18,6 +18,7 @@
         <java.version>11</java.version>
         <lombok.version>1.18.22</lombok.version>
         <mapstruct.version>1.4.2.Final</mapstruct.version>
+        <netty-socketio.version>1.7.19</netty-socketio.version>
     </properties>
 
     <dependencies>
@@ -81,6 +82,13 @@
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt</artifactId>
             <version>0.9.1</version>
+        </dependency>
+
+        <!--    Netty SocketIO   -->
+        <dependency>
+            <groupId>com.corundumstudio.socketio</groupId>
+            <artifactId>netty-socketio</artifactId>
+            <version>${netty-socketio.version}</version>
         </dependency>
 
         <!--    Swagger    -->

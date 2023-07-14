@@ -1,6 +1,7 @@
 package com.example.backendservice.service.impl;
 
 import com.example.backendservice.constant.CommonConstant;
+import com.example.backendservice.constant.ErrorMessage;
 import com.example.backendservice.constant.SortByDataConstant;
 import com.example.backendservice.domain.dto.pagination.PaginationFullRequestDto;
 import com.example.backendservice.domain.dto.pagination.PaginationResponseDto;
@@ -10,6 +11,7 @@ import com.example.backendservice.domain.dto.response.MessageResponseDto;
 import com.example.backendservice.domain.entity.Message;
 import com.example.backendservice.domain.entity.User;
 import com.example.backendservice.domain.mapper.MessageMapper;
+import com.example.backendservice.exception.UnauthorizedException;
 import com.example.backendservice.repository.MessageRepository;
 import com.example.backendservice.service.MessageService;
 import com.example.backendservice.service.UserService;
@@ -34,6 +36,10 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     public MessageResponseDto sendMessageToOtherById(String meId, MessageRequestDto messageRequestDto) {
+        if (!meId.equals(messageRequestDto.getSenderId())) {
+            throw new UnauthorizedException(ErrorMessage.FORBIDDEN_UPDATE_DELETE);
+        }
+
         Message message = messageMapper.toMessage(messageRequestDto);
         User sender = userService.getUserById(meId);
         User receiver = userService.getUserById(messageRequestDto.getReceiverId());

@@ -16,6 +16,9 @@ public class MessageRequestDto {
     private String message;
 
     @NotBlank(message = ErrorMessage.NOT_BLANK_FIELD)
+    private String senderId;
+
+    @NotBlank(message = ErrorMessage.NOT_BLANK_FIELD)
     private String receiverId;
 
 }
