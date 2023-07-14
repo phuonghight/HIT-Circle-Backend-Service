@@ -20,8 +20,9 @@ public class ConnectEventHandler {
     private void onConnect(SocketIOClient client) {
         HandshakeData handshakeData = client.getHandshakeData();
         String accessToken = handshakeData.getSingleUrlParam(CommonConstant.Key.ACCESS_TOKEN);
-        String userId = tokenProvider.extractSubjectFromJwt(accessToken);
         client.set(CommonConstant.Key.ACCESS_TOKEN, accessToken);
+
+        String userId = tokenProvider.extractSubjectFromJwt(accessToken);
         client.set(CommonConstant.Key.USER_ID, userId);
         client.joinRoom(userId);
         log.info("Client user with id {} connected!", userId);

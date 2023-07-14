@@ -8,7 +8,6 @@ import com.example.backendservice.constant.ErrorMessage;
 import com.example.backendservice.exception.UnauthorizedException;
 import com.example.backendservice.security.jwt.JwtTokenProvider;
 import com.example.backendservice.socket.io.exception.SocketIOEventException;
-//import com.example.backendservice.socket.io.security.MyAuthorizationListener;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -38,7 +37,7 @@ public class SocketIOConfig {
             String accessToken = handshakeData.getSingleUrlParam(CommonConstant.Key.ACCESS_TOKEN);
 
             // Chưa xử lý case: dùng jwt để check giống http
-            if (StringUtils.hasText(accessToken) && tokenProvider.validateToken(accessToken)) {
+            if (!StringUtils.hasText(accessToken) || !tokenProvider.validateToken(accessToken)) {
                 throw new UnauthorizedException(ErrorMessage.FORBIDDEN);
             }
             return true;

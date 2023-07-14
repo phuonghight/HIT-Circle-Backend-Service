@@ -15,7 +15,8 @@ public class DisconnectEventHandler {
         for (String room : client.getAllRooms()) {
             client.leaveRoom(room);
         }
-        log.info("Client user with id {} disconnected", client.get(CommonConstant.Key.USER_ID).toString());
+        String userId = client.get(CommonConstant.Key.USER_ID);
+        log.info("Client user with id {} disconnected", userId);
     }
 
 }

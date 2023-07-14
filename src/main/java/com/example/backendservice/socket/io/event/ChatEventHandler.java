@@ -6,7 +6,6 @@ import com.corundumstudio.socketio.annotation.OnEvent;
 import com.example.backendservice.constant.CommonConstant;
 import com.example.backendservice.domain.dto.request.MessageRequestDto;
 import com.example.backendservice.domain.dto.response.MessageResponseDto;
-import com.example.backendservice.domain.entity.Message;
 import com.example.backendservice.service.MessageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +27,8 @@ public class ChatEventHandler {
         MessageResponseDto messageResponseDto = messageService
                 .sendMessageToOtherById(client.get(CommonConstant.Key.USER_ID), message);
 
+        server.getRoomOperations(message.getSenderId())
+                .sendEvent(CommonConstant.Event.SERVER_SEND_MESSAGE, messageResponseDto);
         server.getRoomOperations(message.getReceiverId())
                 .sendEvent(CommonConstant.Event.SERVER_SEND_MESSAGE, messageResponseDto);
     }
