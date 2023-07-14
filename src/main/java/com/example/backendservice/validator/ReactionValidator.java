@@ -9,7 +9,7 @@ public class ReactionValidator implements ConstraintValidator<ValidReaction, Str
     @Override
     public boolean isValid(String target, ConstraintValidatorContext constraintValidatorContext) {
         if (target == null) {
-            return true;
+            return false;
         }
         return ReactionConstant.isValid(target);
     }
