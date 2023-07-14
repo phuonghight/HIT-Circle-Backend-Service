@@ -1,8 +1,10 @@
 package com.example.backendservice.service.impl;
 
 import com.example.backendservice.constant.ErrorMessage;
+import com.example.backendservice.constant.MessageConstant;
 import com.example.backendservice.domain.dto.request.PostCreateDto;
 import com.example.backendservice.domain.dto.request.PostUpdateDto;
+import com.example.backendservice.domain.dto.response.CommonResponseDto;
 import com.example.backendservice.domain.dto.response.PostDto;
 import com.example.backendservice.domain.entity.Post;
 import com.example.backendservice.domain.entity.PostMedia;
@@ -18,12 +20,14 @@ import com.example.backendservice.service.PostService;
 import com.example.backendservice.util.UploadFileUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class PostServiceImp implements PostService {
     private final UserRepository userRepository;
@@ -100,7 +104,7 @@ public class PostServiceImp implements PostService {
     }
 
     @Override
-    public String deletePostById(String postId,String userId) {
+    public CommonResponseDto deletePostById(String postId, String userId) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new NotFoundException(ErrorMessage.Post.ERR_NOT_FOUND_ID, new String[]{postId}));
         if (post.getUser().getId().equals(userId)) {
@@ -111,7 +115,7 @@ public class PostServiceImp implements PostService {
                 }
             }
             postRepository.deleteById(postId);
-            return "Delete post successful";
+            return new CommonResponseDto(true, MessageConstant.DELETE_POST_SUCCESSFULLY);
         }
         else {
             throw new UnauthorizedException(ErrorMessage.Post.ERR_UNAUTHORIZED);
@@ -123,6 +127,14 @@ public class PostServiceImp implements PostService {
         userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException(ErrorMessage.User.ERR_NOT_FOUND_ID, new String[]{userId}));
         List<Post> posts = postRepository.findAllPostByUserId(userId);
+        return postMapper.postsToPostDtos(posts);
+    }
+
+    @Override
+    public List<PostDto> findAllPostByUsername(String username) {
+        userRepository.findUserByUsername(username)
+                .orElseThrow(() -> new NotFoundException(ErrorMessage.User.ERR_NOT_FOUND_USERNAME, new String[]{username}));
+        List<Post> posts = postRepository.findAllPostByUsername(username);
         return postMapper.postsToPostDtos(posts);
     }
 

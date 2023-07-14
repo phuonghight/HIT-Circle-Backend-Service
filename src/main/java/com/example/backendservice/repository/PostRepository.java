@@ -22,4 +22,8 @@ public interface PostRepository extends JpaRepository<Post, String> {
             "INNER JOIN reactions ON posts.id = reactions.post_id " +
             "WHERE reactions.user_id = ?1", nativeQuery = true)
     List<Post> findAllPostMyReaction(String userId);
+            "INNER JOIN users ON posts.user_id = users.id " +
+            "WHERE users.username = ?1 " +
+            "ORDER BY posts.created_date DESC", nativeQuery = true)
+    List<Post> findAllPostByUsername(String username);
 }
