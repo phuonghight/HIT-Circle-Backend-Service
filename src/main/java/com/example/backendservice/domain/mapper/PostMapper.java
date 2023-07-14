@@ -13,12 +13,12 @@ import java.util.List;
 @Mapper(componentModel = "spring",nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface PostMapper {
     @Mappings({
-            @Mapping(target = "caption", source = "postCreateDto.caption", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.SET_TO_NULL)
+            @Mapping(target = "caption", source = "caption", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.SET_TO_NULL)
     })
     Post postCreateDtoToPost(PostCreateDto postCreateDto);
 
     @Mappings({
-            @Mapping(target = "userId", source = "post.user.id"),
+            @Mapping(target = "userId", source = "user.id"),
             @Mapping(target = "mediaFiles", expression = "java(mapMediaFiles(post.getPostMedia()))")
     })
     PostDto postToPostDto(Post post);
@@ -33,7 +33,7 @@ public interface PostMapper {
     }
 
     @Mappings({
-            @Mapping(target = "caption", source = "postUpdateDto.caption", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.SET_TO_NULL)
+            @Mapping(target = "caption", source = "caption", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.SET_TO_NULL)
     })
     void updatePost(@MappingTarget Post post, PostUpdateDto postUpdateDto);
 

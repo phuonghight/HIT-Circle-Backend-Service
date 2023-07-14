@@ -22,7 +22,13 @@ public class CommonConstant {
 
   public static final String CONTENT_TYPE_DOCUMENT = "txt doc pdf ppt pps xlsx xls docx";
   public static final String CONTENT_TYPE_IMAGE = "png jpg jpeg webp gif";
-  public static final String CONTENT_TYPE_VIDEO = "mp4 mpg mpe mpeg webm mov m4v";
+  public static final String CONTENT_TYPE_VIDEO = "mp4 x-msvideo x-flv x-ms-wmv quicktime x-matroska mpeg webm h264 hevc x-m4v";
+  public static final Integer MAX_NUMBER_IMAGE = 5;
+  public static final Integer MAX_NUMBER_VIDEO = 1;
+  public static final Long MAX_IMAGE_SIZE_MB = 5L;
+  public static final Long MAX_VIDEO_SIZE_MB = 20L;
+  public static final Long MAX_IMAGE_SIZE_BYTES = MAX_IMAGE_SIZE_MB * 1024 * 1024;
+  public static final Long MAX_VIDEO_SIZE_BYTES = MAX_VIDEO_SIZE_MB * 1024 * 1024;
 
   public static final Integer NUM_OF_MESSAGES_PER_PAGE_DEFAULT = 30;
 

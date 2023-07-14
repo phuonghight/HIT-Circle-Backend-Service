@@ -174,4 +174,16 @@ public class UserServiceImpl implements UserService {
     return new PaginationResponseDto<>(meta, userMapper.toUserDtos(following));
   }
 
+  @Override
+  public PaginationResponseDto<UserDto> getFriendsById(PaginationFullRequestDto paginationFullRequestDto, String meId) {
+
+    Pageable pageable = PaginationUtil.buildPageable(paginationFullRequestDto, SortByDataConstant.USER);
+
+    Page<User> userPage = userRepository.getFriendsById(meId, pageable);
+
+    PagingMeta meta = PaginationUtil.buildPagingMeta(paginationFullRequestDto, SortByDataConstant.USER, userPage);
+
+    return new PaginationResponseDto<>(meta, userMapper.toUserDtos(userPage.getContent()));
+  }
+
 }
