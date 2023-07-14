@@ -5,9 +5,20 @@ public enum SortByDataConstant implements SortByInterface {
   USER {
     @Override
     public String getSortBy(String sortBy) {
-      if (sortBy.equals(CommonConstant.EMPTY_STRING))
-        return "createdDate";
-      return sortBy;
+      switch (sortBy) {
+        case "email":
+          return "email";
+        case "fullName":
+          return "full_name";
+        case "username":
+          return "username";
+        case "birthday":
+          return "birthday";
+        case "lastModifiedDate":
+          return "last_modified_date";
+        default:
+          return "created_date";
+      }
     }
   },
 

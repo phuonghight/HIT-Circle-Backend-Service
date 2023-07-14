@@ -40,4 +40,9 @@ public interface UserRepository extends JpaRepository<User, String> {
 
   boolean existsByPhone(String phone);
 
+  @Query(value = "select u.* from users u join follows f on u.id = f.user_following_id " +
+          "where f.user_follower_id = ?1 and exists(select ff.* from follows ff where " +
+          "ff.user_follower_id = f.user_following_id and ff.user_following_id = ?1)", nativeQuery = true)
+  Page<User> getFriendsById(String userId, Pageable pageable);
+
 }
