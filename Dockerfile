@@ -20,4 +20,4 @@ WORKDIR /spring-boot
 
 COPY --from=builder /build/target ./
 
-ENTRYPOINT ["java", "-jar", "HIT-Circle-Backend-Service -0.0.1-SNAPSHOT.jar"]
+ENTRYPOINT ["java", "-jar", "Backend-Service-1.0.jar"]
