@@ -38,10 +38,12 @@ public class CommonConstant {
     //Client
     public static final String CLIENT_SEND_MESSAGE = "client_send_message";
     public static final String CLIENT_JOIN_ROOM = "client_join_room";
+    public static final String CLIENT_SEND_COMMENT = "client_send_comment";
 
     //Server
     public static final String SERVER_SEND_ERROR = "server_send_error";
     public static final String SERVER_SEND_MESSAGE = "server_send_message";
+    public static final String SERVER_SEND_COMMENT = "server_send_comment";
   }
 
   public static class Key {
