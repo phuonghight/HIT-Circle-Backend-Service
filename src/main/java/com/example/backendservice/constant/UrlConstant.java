@@ -73,6 +73,15 @@ public class UrlConstant {
     }
   }
 
+  public static class Message {
+    private static final String PRE_FIX = "/message";
+
+    public static final String SEND_MESSAGE_TO_OTHER = PRE_FIX;
+    public static final String GET_MESSAGES_BY_OTHER_BY_ID = PRE_FIX + "/me/{otherId}";
+
+    private Message() {}
+  }
+
   public static class Comment {
     private static final String PRE_FIX = "/comment";
 
@@ -83,7 +92,8 @@ public class UrlConstant {
     public static final String GET_ALL_BY_POST_ID = PRE_FIX + "/all/{postId}";
     public static final String GET_ALL_BY_PARENT_COMMENT_ID = PRE_FIX + "/replies/{parentCommentId}";
 
-    private Comment() {}
+    private Comment() {
+    }
   }
 
 }
