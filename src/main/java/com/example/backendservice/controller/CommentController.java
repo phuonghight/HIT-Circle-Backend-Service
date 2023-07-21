@@ -55,6 +55,13 @@ public class CommentController {
     }
 
     @Tag(name = "comment-controller")
+    @Operation(summary = "API get comment by id")
+    @GetMapping(value = UrlConstant.Comment.GET_BY_COMMENT_ID)
+    public ResponseEntity<?> getCommentById(@PathVariable String commentId) {
+        return VsResponseUtil.success(commentService.getCommentById(commentId));
+    }
+
+    @Tag(name = "comment-controller")
     @Operation(summary = "API get all comment by post id")
     @GetMapping(value = UrlConstant.Comment.GET_ALL_BY_POST_ID)
     public ResponseEntity<?> getAllCommentByPostId(@Valid @ParameterObject PaginationFullRequestDto paginationFullRequestDto,

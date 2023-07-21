@@ -99,6 +99,13 @@ public class CommentServiceImp implements CommentService {
     }
 
     @Override
+    public CommentResponseDto getCommentById(String commentId) {
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new NotFoundException(ErrorMessage.Comment.ERR_NOT_FOUND_ID, new String[]{commentId}));
+        return commentMapper.commentToCommentResponseDto(comment);
+    }
+
+    @Override
     public PaginationResponseDto<CommentResponseDto> getAllCommentByPostId(PaginationFullRequestDto paginationFullRequestDto, String postId) {
         postRepository.findById(postId)
                 .orElseThrow(() -> new NotFoundException(ErrorMessage.Post.ERR_NOT_FOUND_ID, new String[]{postId}));
