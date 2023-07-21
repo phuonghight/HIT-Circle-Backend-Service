@@ -29,4 +29,7 @@ public class CommonConstant {
   public static final Long MAX_VIDEO_SIZE_MB = 20L;
   public static final Long MAX_IMAGE_SIZE_BYTES = MAX_IMAGE_SIZE_MB * 1024 * 1024;
   public static final Long MAX_VIDEO_SIZE_BYTES = MAX_VIDEO_SIZE_MB * 1024 * 1024;
+
+  public static final Integer MAX_OF_LEVEL_COMMENT= 3;
+  public static final Integer NUM_OF_COMMENT_PER_PAGE_DEFAULT = 20;
 }

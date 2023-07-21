@@ -73,4 +73,16 @@ public class UrlConstant {
     }
   }
 
+  public static class Comment {
+    private static final String PRE_FIX = "/comment";
+
+    public static final String CREATE_COMMENT = PRE_FIX;
+    public static final String UPDATE_COMMENT = PRE_FIX + "/{commentId}";
+    public static final String DELETE_COMMENT = PRE_FIX + "/{commentId}";
+    public static final String GET_ALL_BY_POST_ID = PRE_FIX + "/all/{postId}";
+    public static final String GET_ALL_BY_PARENT_COMMENT_ID = PRE_FIX + "/{parentCommentId}";
+
+    private Comment() {}
+  }
+
 }

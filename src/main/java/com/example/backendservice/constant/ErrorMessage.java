@@ -54,4 +54,8 @@ public class ErrorMessage {
   public static class Reaction {
     public static final String ERR_NOT_FOUND = "exception.reaction.not.found";
   }
+
+  public static class Comment {
+    public static final String ERR_NOT_FOUND_ID = "exception.comment.not.found.id";
+  }
 }
