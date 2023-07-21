@@ -21,12 +21,14 @@ import com.example.backendservice.repository.CommentRepository;
 import com.example.backendservice.repository.PostRepository;
 import com.example.backendservice.repository.UserRepository;
 import com.example.backendservice.service.CommentService;
+import com.example.backendservice.util.DateTimeUtil;
 import com.example.backendservice.util.PaginationUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -65,7 +67,10 @@ public class CommentServiceImp implements CommentService {
             comment.setParentComment(null);
             comment.setLevel(1);
         }
-        return commentMapper.commentToCommentResponseDto(commentRepository.save(comment));
+        comment.setCreatedBy(userId);
+        comment.setLastModifiedBy(userId);
+        commentRepository.save(comment);
+        return commentMapper.commentToCommentResponseDto(comment);
     }
 
     @Override

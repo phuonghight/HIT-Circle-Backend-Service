@@ -1,5 +1,6 @@
 package com.example.backendservice.domain.mapper;
 
+import com.example.backendservice.constant.CommonConstant;
 import com.example.backendservice.domain.dto.request.CommentCreateDto;
 import com.example.backendservice.domain.dto.request.CommentUpdateDto;
 import com.example.backendservice.domain.dto.response.CommentResponseDto;
@@ -19,6 +20,8 @@ public interface CommentMapper {
             @Mapping(target = "userId", source = "user.id"),
             @Mapping(target = "postId", source = "post.id"),
             @Mapping(target = "parentCommentId", source = "parentComment.id"),
+            @Mapping(target = "createdDate", source = "createdDate", dateFormat = CommonConstant.PATTERN_DATE_TIME),
+            @Mapping(target = "lastModifiedDate", source = "lastModifiedDate", dateFormat = CommonConstant.PATTERN_DATE_TIME)
     })
     CommentResponseDto commentToCommentResponseDto(Comment comment);
     @Mappings({
