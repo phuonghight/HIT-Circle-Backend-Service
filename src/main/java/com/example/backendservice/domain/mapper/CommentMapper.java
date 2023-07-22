@@ -19,7 +19,7 @@ public interface CommentMapper {
     @Mappings({
             @Mapping(target = "userId", source = "user.id"),
             @Mapping(target = "postId", source = "post.id"),
-            @Mapping(target = "parentCommentId", source = "parentComment.id"),
+            @Mapping(target = "parentCommentId", source = "parentComment.id", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.SET_TO_NULL),
             @Mapping(target = "createdDate", source = "createdDate", dateFormat = CommonConstant.PATTERN_DATE_TIME),
             @Mapping(target = "lastModifiedDate", source = "lastModifiedDate", dateFormat = CommonConstant.PATTERN_DATE_TIME)
     })
