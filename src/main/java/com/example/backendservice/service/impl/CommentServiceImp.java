@@ -21,15 +21,17 @@ import com.example.backendservice.repository.CommentRepository;
 import com.example.backendservice.repository.PostRepository;
 import com.example.backendservice.repository.UserRepository;
 import com.example.backendservice.service.CommentService;
-import com.example.backendservice.util.DateTimeUtil;
 import com.example.backendservice.util.PaginationUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+import javax.validation.Validator;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -38,8 +40,14 @@ public class CommentServiceImp implements CommentService {
     private final PostRepository postRepository;
     private  final CommentRepository commentRepository;
     private final CommentMapper commentMapper;
+    private final Validator validator;
     @Override
     public CommentResponseDto sendComment(String userId, CommentCreateDto commentCreateDto) {
+        Set<ConstraintViolation<CommentCreateDto>> violations = validator.validate(commentCreateDto);
+        if (!violations.isEmpty()) {
+            throw new ConstraintViolationException(violations);
+        }
+
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException(ErrorMessage.User.ERR_NOT_FOUND_ID, new String[]{userId}));
         Post post = postRepository.findById(commentCreateDto.getPostId())

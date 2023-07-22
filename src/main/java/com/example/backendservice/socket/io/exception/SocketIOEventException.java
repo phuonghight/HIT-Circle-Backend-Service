@@ -7,6 +7,7 @@ import io.netty.channel.ChannelHandlerContext;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import javax.validation.ConstraintViolationException;
 import java.util.List;
 
 @Slf4j
@@ -19,7 +20,12 @@ public class SocketIOEventException implements ExceptionListener {
         if(e.getCause().getClass().equals(EventException.class)) {
             sendErrorMessageToClient(client, e.getCause().getMessage());
         } else {
-            sendErrorMessageToClient(client, "Hệ thống đã xãy ra lỗi!");
+            if (e.getCause().getClass().equals(ConstraintViolationException.class)) {
+                sendErrorMessageToClient(client, e.getCause().getMessage());
+            }
+            else {
+                sendErrorMessageToClient(client, "Hệ thống đã xãy ra lỗi!");
+            }
         }
     }
 
