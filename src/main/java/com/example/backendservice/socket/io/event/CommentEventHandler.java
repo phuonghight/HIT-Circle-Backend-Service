@@ -42,7 +42,7 @@ public class CommentEventHandler {
         CommentResponseDto commentResponseDto = commentService
                 .sendComment(client.get(CommonConstant.Key.USER_ID), commentData);
 
-        //Server gửi comment về phòng: postId
+        //Server gửi comment cho post có phòng là postId
         server.getRoomOperations(commentResponseDto.getPostId())
                 .sendEvent(CommonConstant.Event.SERVER_SEND_COMMENT, commentResponseDto);
 
@@ -59,7 +59,7 @@ public class CommentEventHandler {
         if (!listUserId.isEmpty()) {
             for (String userId : listUserId) {
                 server.getRoomOperations(userId)
-                        .sendEvent(CommonConstant.Event.SERVER_SEND_COMMENT, commentResponseDto);
+                        .sendEvent(CommonConstant.Event.SERVER_SEND_COMMENT_NOTIFICATION, commentResponseDto);
             }
         }
 
