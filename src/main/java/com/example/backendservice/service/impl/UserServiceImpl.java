@@ -4,12 +4,10 @@ import com.example.backendservice.constant.ErrorMessage;
 import com.example.backendservice.constant.SortByDataConstant;
 import com.example.backendservice.constant.MessageConstant;
 import com.example.backendservice.domain.dto.pagination.*;
-import com.example.backendservice.domain.dto.request.FollowRequestDto;
 import com.example.backendservice.domain.dto.request.ChangePasswordRequestDto;
 import com.example.backendservice.domain.dto.request.UserUpdateDto;
 import com.example.backendservice.domain.dto.response.CommonResponseDto;
 import com.example.backendservice.domain.dto.response.UserDto;
-import com.example.backendservice.domain.entity.Follow;
 import com.example.backendservice.domain.entity.User;
 import com.example.backendservice.domain.mapper.UserMapper;
 import com.example.backendservice.exception.AlreadyExistException;
@@ -21,7 +19,6 @@ import com.example.backendservice.service.UserService;
 import com.example.backendservice.util.PaginationUtil;
 import com.example.backendservice.util.UploadFileUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -36,8 +33,6 @@ public class UserServiceImpl implements UserService {
   private final UserRepository userRepository;
 
   private final UserMapper userMapper;
-
-  private final FollowRepository followRepository;
 
   private final UploadFileUtil uploadFileUtil;
 
@@ -129,50 +124,47 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public PaginationResponseDto<UserDto> getFollowers(PaginationRequestDto paginationRequestDto, String userId) {
-    Pageable pageable = PaginationUtil.buildPageable(paginationRequestDto);
-
-    Page<User> userPage = userRepository.getFollowersByUserId(userId, pageable);
-
-    PagingMeta meta = new PagingMeta(
-            userPage.getTotalElements(),
-            userPage.getTotalPages(),
-            paginationRequestDto.getPageNum() + 1,
-            paginationRequestDto.getPageSize(),
-            "createdAt",
-            "DESC"
-    );
-
-    return new PaginationResponseDto<>(meta, userMapper.toUserDtos(userPage.getContent()));
+    List<User> users = userRepository.getFollowersByUserId(userId);
+    return getUserDtoPaginationResponseDto(paginationRequestDto, users);
   }
 
   @Override
   public PaginationResponseDto<UserDto> getFollowing(PaginationRequestDto paginationRequestDto, String userId) {
-    Pageable pageable = PaginationUtil.buildPageable(paginationRequestDto);
-
-    Page<User> userPage = userRepository.getFollowingByUserId(userId, pageable);
-
-    PagingMeta meta = new PagingMeta(
-            userPage.getTotalElements(),
-            userPage.getTotalPages(),
-            paginationRequestDto.getPageNum() + 1,
-            paginationRequestDto.getPageSize(),
-            "createdAt",
-            "DESC"
-    );
-
-    return new PaginationResponseDto<>(meta, userMapper.toUserDtos(userPage.getContent()));
+    List<User> users = userRepository.getFollowingByUserId(userId);
+    return getUserDtoPaginationResponseDto(paginationRequestDto, users);
   }
 
   @Override
   public PaginationResponseDto<UserDto> getFriendsById(PaginationFullRequestDto paginationFullRequestDto, String meId) {
+    List<User> userPage = userRepository.getFriendsById(meId);
+    return getUserDtoPaginationResponseDto(paginationFullRequestDto, userPage);
+  }
 
-    Pageable pageable = PaginationUtil.buildPageable(paginationFullRequestDto, SortByDataConstant.USER);
+  private PaginationResponseDto<UserDto> getUserDtoPaginationResponseDto(PaginationRequestDto paginationRequestDto, List<User> users) {
+    List<User> result = new ArrayList<>();
 
-    Page<User> userPage = userRepository.getFriendsById(meId, pageable);
+    int pageSize = paginationRequestDto.getPageSize();
+    int pageNum = paginationRequestDto.getPageNum() + 1;
+    long totalElements = users.size();
+    int totalPages;
+    if (users.size() % pageSize == 0) totalPages = users.size() / paginationRequestDto.getPageSize();
+    else totalPages = users.size() / paginationRequestDto.getPageSize() + 1;
 
-    PagingMeta meta = PaginationUtil.buildPagingMeta(paginationFullRequestDto, SortByDataConstant.USER, userPage);
+    long n = Math.min((long) pageNum * pageSize, totalElements);
+    for (int i = pageNum * pageSize - pageSize; i < n ; i++) {
+      result.add(users.get(i));
+    }
 
-    return new PaginationResponseDto<>(meta, userMapper.toUserDtos(userPage.getContent()));
+    PagingMeta meta = new PagingMeta(
+            totalElements,
+            totalPages,
+            pageNum,
+            pageSize,
+            "created_date",
+            "DESC"
+    );
+
+    return new PaginationResponseDto<>(meta, userMapper.toUserDtos(result));
   }
 
 }
