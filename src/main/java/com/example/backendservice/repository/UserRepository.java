@@ -11,6 +11,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -39,6 +40,25 @@ public interface UserRepository extends JpaRepository<User, String> {
   boolean existsByUsername(String username);
 
   boolean existsByPhone(String phone);
+
+  @Query(value = "select u.* from users u join follows f on f.user_follower_id = ?1 where " +
+          "u.id = f.user_following_id order by f.created_date desc",
+          nativeQuery = true)
+  List<User> getFollowingByUserId(String id);
+
+  @Query(value = "select u.* from users u join follows f on f.user_follower_id = ?1 where " +
+          "u.id = f.user_following_id order by f.created_date desc",
+          nativeQuery = true)
+  Page<User> getFollowingByUserId(String id, Pageable pageable);
+
+  @Query(value = "select u.* from users u join follows f on f.user_following_id = ?1 where " +
+          "u.id = f.user_follower_id order by f.created_date desc", nativeQuery = true)
+  List<User> getFollowersByUserId(String id);
+
+  @Query(value = "select u.* from users u join follows f on f.user_following_id = ?1 where " +
+          "u.id = f.user_follower_id order by f.created_date desc",
+          nativeQuery = true)
+  Page<User> getFollowersByUserId(String id, Pageable pageable);
 
   @Query(value = "select u.* from users u join follows f on u.id = f.user_following_id " +
           "where f.user_follower_id = ?1 and exists(select ff.* from follows ff where " +

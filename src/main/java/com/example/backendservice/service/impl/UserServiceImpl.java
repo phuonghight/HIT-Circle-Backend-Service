@@ -3,10 +3,7 @@ package com.example.backendservice.service.impl;
 import com.example.backendservice.constant.ErrorMessage;
 import com.example.backendservice.constant.SortByDataConstant;
 import com.example.backendservice.constant.MessageConstant;
-import com.example.backendservice.domain.dto.pagination.PaginationFullRequestDto;
-import com.example.backendservice.domain.dto.pagination.PaginationResponseDto;
-import com.example.backendservice.domain.dto.pagination.PaginationSortRequestDto;
-import com.example.backendservice.domain.dto.pagination.PagingMeta;
+import com.example.backendservice.domain.dto.pagination.*;
 import com.example.backendservice.domain.dto.request.FollowRequestDto;
 import com.example.backendservice.domain.dto.request.ChangePasswordRequestDto;
 import com.example.backendservice.domain.dto.request.UserUpdateDto;
@@ -131,47 +128,39 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public PaginationResponseDto<UserDto> getFollowers(PaginationSortRequestDto paginationSortRequestDto,
-                                                     FollowRequestDto followRequestDto) {
-    Pageable pageable = PaginationUtil.buildPageable(paginationSortRequestDto, SortByDataConstant.Follow);
+  public PaginationResponseDto<UserDto> getFollowers(PaginationRequestDto paginationRequestDto, String userId) {
+    Pageable pageable = PaginationUtil.buildPageable(paginationRequestDto);
 
-    Page<Follow> followPage = followRepository.findFollowsByToId(followRequestDto.getUserId(), pageable);
+    Page<User> userPage = userRepository.getFollowersByUserId(userId, pageable);
 
-    List<Follow> follows = followPage.getContent();
+    PagingMeta meta = new PagingMeta(
+            userPage.getTotalElements(),
+            userPage.getTotalPages(),
+            paginationRequestDto.getPageNum() + 1,
+            paginationRequestDto.getPageSize(),
+            "createdAt",
+            "DESC"
+    );
 
-    List<User> followers = new ArrayList<>();
-
-    for (Follow follow : follows) {
-      followers.add(this.getUserById(follow.getFrom().getId()));
-    }
-
-    PagingMeta meta = PaginationUtil.buildPagingMeta(paginationSortRequestDto,
-            SortByDataConstant.Follow,
-            followPage);
-
-    return new PaginationResponseDto<>(meta, userMapper.toUserDtos(followers));
+    return new PaginationResponseDto<>(meta, userMapper.toUserDtos(userPage.getContent()));
   }
 
   @Override
-  public PaginationResponseDto<UserDto> getFollowing(PaginationSortRequestDto paginationSortRequestDto,
-                                                     FollowRequestDto followRequestDto) {
-    Pageable pageable = PaginationUtil.buildPageable(paginationSortRequestDto, SortByDataConstant.Follow);
+  public PaginationResponseDto<UserDto> getFollowing(PaginationRequestDto paginationRequestDto, String userId) {
+    Pageable pageable = PaginationUtil.buildPageable(paginationRequestDto);
 
-    Page<Follow> followPage = followRepository.findFollowsByFromId(followRequestDto.getUserId(), pageable);
+    Page<User> userPage = userRepository.getFollowingByUserId(userId, pageable);
 
-    List<Follow> follows = followPage.getContent();
+    PagingMeta meta = new PagingMeta(
+            userPage.getTotalElements(),
+            userPage.getTotalPages(),
+            paginationRequestDto.getPageNum() + 1,
+            paginationRequestDto.getPageSize(),
+            "createdAt",
+            "DESC"
+    );
 
-    List<User> following = new ArrayList<>();
-
-    for (Follow follow : follows) {
-      following.add(this.getUserById(follow.getTo().getId()));
-    }
-
-    PagingMeta meta = PaginationUtil.buildPagingMeta(paginationSortRequestDto,
-            SortByDataConstant.Follow,
-            followPage);
-
-    return new PaginationResponseDto<>(meta, userMapper.toUserDtos(following));
+    return new PaginationResponseDto<>(meta, userMapper.toUserDtos(userPage.getContent()));
   }
 
   @Override
