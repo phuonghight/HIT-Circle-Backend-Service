@@ -1,6 +1,7 @@
 package com.example.backendservice.service;
 
 import com.example.backendservice.domain.dto.pagination.PaginationFullRequestDto;
+import com.example.backendservice.domain.dto.pagination.PaginationRequestDto;
 import com.example.backendservice.domain.dto.pagination.PaginationResponseDto;
 import com.example.backendservice.domain.dto.request.ChangePasswordRequestDto;
 import com.example.backendservice.domain.dto.pagination.PaginationSortRequestDto;
@@ -25,11 +26,11 @@ public interface UserService {
 
   CommonResponseDto changePassword(String userId, ChangePasswordRequestDto passwordRequestDto);
 
-  PaginationResponseDto<UserDto> getFollowers(PaginationSortRequestDto paginationSortRequestDto,
-                                              FollowRequestDto followRequestDto);
+  PaginationResponseDto<UserDto> getFollowers(PaginationRequestDto paginationRequestDto,
+                                              String username);
 
-  PaginationResponseDto<UserDto> getFollowing(PaginationSortRequestDto paginationSortRequestDto,
-                                              FollowRequestDto followRequestDto);
+  PaginationResponseDto<UserDto> getFollowing(PaginationRequestDto paginationRequestDto,
+                                              String username);
 
   PaginationResponseDto<UserDto> getFriendsById(PaginationFullRequestDto paginationFullRequestDto, String meId);
 
