@@ -2,7 +2,6 @@ package com.example.backendservice.service.impl;
 
 import com.example.backendservice.constant.CommonConstant;
 import com.example.backendservice.constant.ErrorMessage;
-import com.example.backendservice.constant.SortByDataConstant;
 import com.example.backendservice.domain.dto.pagination.PaginationFullRequestDto;
 import com.example.backendservice.domain.dto.pagination.PaginationResponseDto;
 import com.example.backendservice.domain.dto.pagination.PagingMeta;
@@ -16,12 +15,10 @@ import com.example.backendservice.repository.MessageRepository;
 import com.example.backendservice.service.MessageService;
 import com.example.backendservice.service.UserService;
 import com.example.backendservice.util.DateTimeUtil;
-import com.example.backendservice.util.PaginationUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -58,21 +55,32 @@ public class MessageServiceImpl implements MessageService {
     public PaginationResponseDto<MessageResponseDto> getMessagesBySenderIdAndReceiverId(
             PaginationFullRequestDto paginationFullRequestDto,
             String meId, String otherId) {
-        paginationFullRequestDto.setIsAscending(true);
-        paginationFullRequestDto.setPageSize(CommonConstant.NUM_OF_MESSAGES_PER_PAGE_DEFAULT);
 
-        Pageable pageable = PaginationUtil
-                .buildPageable(paginationFullRequestDto, SortByDataConstant.Message);
+        List<Message> messages = messageRepository.getMessagesBySenderIdAndReceiverId(meId, otherId);
+        List<Message> result = new ArrayList<>();
 
-        Page<Message> messagePage = messageRepository
-                .getMessagesBySenderIdAndReceiverId(meId, otherId, pageable);
+        int pageNum = paginationFullRequestDto.getPageNum() + 1;
+        int pageSize = paginationFullRequestDto.getPageSize() != CommonConstant.PAGE_SIZE_DEFAULT
+                ? paginationFullRequestDto.getPageSize() : CommonConstant.NUM_OF_MESSAGES_PER_PAGE_DEFAULT;
+        long totalElements = messages.size();
+        int totalPages;
+        if (messages.size() % pageSize == 0) totalPages = messages.size() / pageSize;
+        else totalPages = messages.size() / pageSize + 1;
 
-        PagingMeta meta = PaginationUtil
-                .buildPagingMeta(paginationFullRequestDto, SortByDataConstant.Message, messagePage);
+        long n = Math.min((long) pageNum * pageSize, totalElements);
+        for (int i = pageNum * pageSize - pageSize; i < n ; i++) {
+            result.add(messages.get(i));
+        }
 
-        List<MessageResponseDto> messageResponseDtoList =
-                messageMapper.toResponseDto(messagePage.getContent());
+        PagingMeta meta = new PagingMeta(
+                totalElements,
+                totalPages,
+                pageNum,
+                pageSize,
+                "created_date",
+                "ASC"
+        );
 
-        return new PaginationResponseDto<>(meta, messageResponseDtoList);
+        return new PaginationResponseDto<>(meta, messageMapper.toResponseDto(result));
     }
 }
