@@ -55,6 +55,7 @@ public class MessageServiceImpl implements MessageService {
     public PaginationResponseDto<MessageResponseDto> getMessagesBySenderIdAndReceiverId(
             PaginationFullRequestDto paginationFullRequestDto,
             String meId, String otherId) {
+        userService.getUserById(otherId);
 
         List<Message> messages = messageRepository.getMessagesBySenderIdAndReceiverId(meId, otherId);
         List<Message> result = new ArrayList<>();
