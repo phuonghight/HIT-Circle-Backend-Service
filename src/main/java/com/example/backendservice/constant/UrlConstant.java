@@ -40,8 +40,8 @@ public class UrlConstant {
   public static class Follow {
     private static final String PRE_FIX = "/follow";
 
-    public static final String FOLLOW = PRE_FIX;
-    public static final String UNFOLLOW = PRE_FIX;
+    public static final String FOLLOW = PRE_FIX + "/{userId}";
+    public static final String UNFOLLOW = PRE_FIX + "/{userId}";
 
     private Follow() {}
   }
