@@ -3,6 +3,7 @@ package com.example.backendservice.domain.mapper;
 import com.example.backendservice.constant.CommonConstant;
 import com.example.backendservice.domain.dto.request.CommentCreateDto;
 import com.example.backendservice.domain.dto.request.CommentUpdateDto;
+import com.example.backendservice.domain.dto.response.CommentNotificationResponseDto;
 import com.example.backendservice.domain.dto.response.CommentResponseDto;
 import com.example.backendservice.domain.entity.Comment;
 import org.mapstruct.*;
@@ -24,6 +25,18 @@ public interface CommentMapper {
             @Mapping(target = "lastModifiedDate", source = "lastModifiedDate", dateFormat = CommonConstant.PATTERN_DATE_TIME)
     })
     CommentResponseDto commentToCommentResponseDto(Comment comment);
+
+    @Mappings({
+            @Mapping(target = "id", source = "id"),
+            @Mapping(target = "notificationMessage", ignore = true),
+            @Mapping(target = "usernameCreatedComment", source = "user.username"),
+            @Mapping(target = "postId", source = "post.id"),
+            @Mapping(target = "parentCommentId", source = "parentComment.id", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.SET_TO_NULL),
+            @Mapping(target = "createdDate", source = "createdDate", dateFormat = CommonConstant.PATTERN_DATE_TIME),
+            @Mapping(target = "lastModifiedDate", source = "lastModifiedDate", dateFormat = CommonConstant.PATTERN_DATE_TIME)
+    })
+    CommentNotificationResponseDto commentToCommentNotificationResponseDto(Comment comment);
+
     @Mappings({
             @Mapping(target = "comment", source = "comment")
     })

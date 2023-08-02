@@ -6,7 +6,10 @@ import com.corundumstudio.socketio.annotation.OnEvent;
 import com.example.backendservice.constant.CommonConstant;
 import com.example.backendservice.constant.ErrorMessage;
 import com.example.backendservice.domain.dto.request.CommentCreateDto;
+import com.example.backendservice.domain.dto.response.CommentNotificationResponseDto;
 import com.example.backendservice.domain.dto.response.CommentResponseDto;
+import com.example.backendservice.domain.entity.Comment;
+import com.example.backendservice.domain.mapper.CommentMapper;
 import com.example.backendservice.exception.NotFoundException;
 import com.example.backendservice.repository.CommentRepository;
 import com.example.backendservice.repository.PostRepository;
@@ -26,6 +29,7 @@ public class CommentEventHandler {
     private final CommentService commentService;
     private final PostRepository postRepository;
     private final CommentRepository commentRepository;
+    private final CommentMapper commentMapper;
 
     @OnEvent(CommonConstant.Event.CLIENT_JOIN_ROOM)
     public void handlerEventJoinRoom(SocketIOClient client, String postId){
@@ -39,8 +43,13 @@ public class CommentEventHandler {
     public void handlerEventSendComment(SocketIOClient client, CommentCreateDto commentData){
         log.info("User {} send comment: {}", client.get(CommonConstant.Key.USER_ID), commentData.getComment());
 
-        CommentResponseDto commentResponseDto = commentService
+        Comment comment = commentService
                 .sendComment(client.get(CommonConstant.Key.USER_ID), commentData);
+        CommentResponseDto commentResponseDto = commentMapper.commentToCommentResponseDto(comment);
+        CommentNotificationResponseDto commentNotificationResponseDto =
+                commentMapper.commentToCommentNotificationResponseDto(comment);
+        commentNotificationResponseDto.setNotificationMessage(
+                comment.getUser().getUsername() + " đã thêm 1 bình luận mới");
 
         //Server gửi comment cho post có phòng là postId
         server.getRoomOperations(commentResponseDto.getPostId())
@@ -59,7 +68,7 @@ public class CommentEventHandler {
         if (!listUserId.isEmpty()) {
             for (String userId : listUserId) {
                 server.getRoomOperations(userId)
-                        .sendEvent(CommonConstant.Event.SERVER_SEND_COMMENT_NOTIFICATION, commentResponseDto);
+                        .sendEvent(CommonConstant.Event.SERVER_SEND_COMMENT_NOTIFICATION, commentNotificationResponseDto);
             }
         }
 

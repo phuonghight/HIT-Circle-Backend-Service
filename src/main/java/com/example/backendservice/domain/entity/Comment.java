@@ -40,10 +40,12 @@ public class Comment extends UserDateAuditing {
     private Post post;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "parent_comment_id")
     private Comment parentComment;
 
     @OneToMany(mappedBy = "parentComment", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<Comment> replies;
 
 }

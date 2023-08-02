@@ -62,7 +62,7 @@ public class CommentController {
     }
 
     @Tag(name = "comment-controller")
-    @Operation(summary = "API get all comment by post id")
+    @Operation(summary = "API get all comment lv1 by post id")
     @GetMapping(value = UrlConstant.Comment.GET_ALL_BY_POST_ID)
     public ResponseEntity<?> getAllCommentByPostId(@Valid @ParameterObject PaginationFullRequestDto paginationFullRequestDto,
                                                @PathVariable String postId) {

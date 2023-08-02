@@ -42,7 +42,7 @@ public class CommentServiceImp implements CommentService {
     private final CommentMapper commentMapper;
     private final Validator validator;
     @Override
-    public CommentResponseDto sendComment(String userId, CommentCreateDto commentCreateDto) {
+    public Comment sendComment(String userId, CommentCreateDto commentCreateDto) {
         Set<ConstraintViolation<CommentCreateDto>> violations = validator.validate(commentCreateDto);
         if (!violations.isEmpty()) {
             throw new ConstraintViolationException(violations);
@@ -77,8 +77,7 @@ public class CommentServiceImp implements CommentService {
         }
         comment.setCreatedBy(userId);
         comment.setLastModifiedBy(userId);
-        commentRepository.save(comment);
-        return commentMapper.commentToCommentResponseDto(comment);
+        return commentRepository.save(comment);
     }
 
     @Override
@@ -124,7 +123,9 @@ public class CommentServiceImp implements CommentService {
                 .orElseThrow(() -> new NotFoundException(ErrorMessage.Post.ERR_NOT_FOUND_ID, new String[]{postId}));
 
         paginationFullRequestDto.setIsAscending(true);
-        paginationFullRequestDto.setPageSize(CommonConstant.NUM_OF_COMMENT_PER_PAGE_DEFAULT);
+        int pageSize = paginationFullRequestDto.getPageSize() != CommonConstant.PAGE_SIZE_DEFAULT
+                ? paginationFullRequestDto.getPageSize() : CommonConstant.NUM_OF_COMMENT_PER_PAGE_DEFAULT;
+        paginationFullRequestDto.setPageSize(pageSize);
 
         Pageable pageable = PaginationUtil
                 .buildPageable(paginationFullRequestDto, SortByDataConstant.Comment);
@@ -143,7 +144,9 @@ public class CommentServiceImp implements CommentService {
                 .orElseThrow(() -> new NotFoundException(ErrorMessage.Comment.ERR_NOT_FOUND_ID, new String[]{parentCommentId}));
 
         paginationFullRequestDto.setIsAscending(true);
-        paginationFullRequestDto.setPageSize(CommonConstant.NUM_OF_COMMENT_PER_PAGE_DEFAULT);
+        int pageSize = paginationFullRequestDto.getPageSize() != CommonConstant.PAGE_SIZE_DEFAULT
+                ? paginationFullRequestDto.getPageSize() : CommonConstant.NUM_OF_COMMENT_PER_PAGE_DEFAULT;
+        paginationFullRequestDto.setPageSize(pageSize);
 
         Pageable pageable = PaginationUtil
                 .buildPageable(paginationFullRequestDto, SortByDataConstant.Comment);

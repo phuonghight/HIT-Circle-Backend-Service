@@ -11,7 +11,7 @@ import java.util.List;
 
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, String> {
-    @Query(value = "SELECT * FROM comments WHERE post_id = ?1", nativeQuery = true)
+    @Query(value = "SELECT * FROM comments WHERE post_id = ?1 AND level = 1", nativeQuery = true)
     Page<Comment> getAllCommentByPostId(String postId, Pageable pageable);
     @Query(value = "SELECT * FROM comments WHERE parent_comment_id = ?1", nativeQuery = true)
     Page<Comment> getAllReplyByParentCommentId(String parentCommentId, Pageable pageable);
