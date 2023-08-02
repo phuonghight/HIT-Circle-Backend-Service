@@ -4,6 +4,7 @@ import com.example.backendservice.base.RestApiV1;
 import com.example.backendservice.base.VsResponseUtil;
 import com.example.backendservice.constant.UrlConstant;
 import com.example.backendservice.domain.dto.pagination.PaginationFullRequestDto;
+import com.example.backendservice.domain.dto.pagination.PaginationRequestDto;
 import com.example.backendservice.domain.dto.request.ChangePasswordRequestDto;
 import com.example.backendservice.domain.dto.pagination.PaginationSortRequestDto;
 import com.example.backendservice.domain.dto.request.FollowRequestDto;
@@ -71,22 +72,22 @@ public class UserController {
 
   @Tag(name = "user-controller")
   @Operation(summary = "API get users have been following target user")
-  @GetMapping(value = UrlConstant.User.GET_FOLLOWERS)
+  @GetMapping(value = UrlConstant.User.GET_FOLLOWERS_BY_USER_ID)
   public ResponseEntity<?> getFollowers(@Parameter(name = "user", hidden = true)
-                                         @CurrentUser UserPrincipal user,
-                                        @Valid @ParameterObject PaginationSortRequestDto paginationSortRequestDto,
-                                        @Valid @RequestBody FollowRequestDto followRequestDto) {
-    return VsResponseUtil.success(userService.getFollowers(paginationSortRequestDto, followRequestDto));
+                                        @CurrentUser UserPrincipal user,
+                                        @Valid @ParameterObject PaginationRequestDto paginationRequestDto,
+                                        @PathVariable String userId) {
+    return VsResponseUtil.success(userService.getFollowers(paginationRequestDto, userId));
   }
 
   @Tag(name = "user-controller")
   @Operation(summary = "API get users that target user have been following")
-  @GetMapping(value = UrlConstant.User.GET_FOLLOWING)
+  @GetMapping(value = UrlConstant.User.GET_FOLLOWING_BY_USER_ID)
   public ResponseEntity<?> getFollowing(@Parameter(name = "user", hidden = true)
                                         @CurrentUser UserPrincipal user,
-                                        @Valid @ParameterObject PaginationSortRequestDto paginationSortRequestDto,
-                                        @Valid @RequestBody FollowRequestDto followRequestDto) {
-    return VsResponseUtil.success(userService.getFollowing(paginationSortRequestDto, followRequestDto));
+                                        @Valid @ParameterObject PaginationRequestDto paginationRequestDto,
+                                        @PathVariable String userId) {
+    return VsResponseUtil.success(userService.getFollowing(paginationRequestDto, userId));
   }
 
   @Tag(name = "user-controller")

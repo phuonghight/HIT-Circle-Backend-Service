@@ -26,8 +26,8 @@ public enum SortByDataConstant implements SortByInterface {
     @Override
     public String getSortBy(String sortBy) {
       if (sortBy.equals(CommonConstant.EMPTY_STRING))
-        return "createdDate";
-      return sortBy;
+        return "last_modified_date";
+      return "created_date";
     }
   },
 
@@ -51,4 +51,6 @@ public enum SortByDataConstant implements SortByInterface {
     }
   }
 
-}
+};
+
+

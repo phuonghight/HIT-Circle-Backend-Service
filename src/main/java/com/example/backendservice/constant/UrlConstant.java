@@ -25,6 +25,10 @@ public class UrlConstant {
 
     public static final String GET_FOLLOWERS = PRE_FIX + "/followers";
     public static final String GET_FOLLOWING = PRE_FIX + "/following";
+
+    public static final String GET_FOLLOWERS_BY_USER_ID = PRE_FIX + "/{userId}/followers";
+    public static final String GET_FOLLOWING_BY_USER_ID = PRE_FIX + "/{userId}/following";
+
     public static final String GET_FRIENDS = PRE_FIX + "/friends";
 
     private User() {
@@ -34,8 +38,8 @@ public class UrlConstant {
   public static class Follow {
     private static final String PRE_FIX = "/follow";
 
-    public static final String FOLLOW = PRE_FIX;
-    public static final String UNFOLLOW = PRE_FIX;
+    public static final String FOLLOW = PRE_FIX + "/{userId}";
+    public static final String UNFOLLOW = PRE_FIX + "/{userId}";
 
     private Follow() {}
   }
