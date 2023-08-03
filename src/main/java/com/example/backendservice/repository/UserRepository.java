@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, String> {
@@ -55,5 +56,9 @@ public interface UserRepository extends JpaRepository<User, String> {
           "ff.user_follower_id = f.user_following_id and ff.user_following_id = ?1) " +
           "order by f.created_date desc", nativeQuery = true)
   List<User> getFriendsById(String userId);
+
+  @Query(value = "select u.* from users u join messages m on m.sender_id = ?1 " +
+          "where u.id = m.receiver_id order by m.created_date desc ", nativeQuery = true)
+  Set<User> getConversation(String userId);
 
 }

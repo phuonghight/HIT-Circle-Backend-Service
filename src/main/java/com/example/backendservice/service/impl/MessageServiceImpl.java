@@ -61,8 +61,7 @@ public class MessageServiceImpl implements MessageService {
         List<Message> result = new ArrayList<>();
 
         int pageNum = paginationFullRequestDto.getPageNum() + 1;
-        int pageSize = paginationFullRequestDto.getPageSize() != CommonConstant.PAGE_SIZE_DEFAULT
-                ? paginationFullRequestDto.getPageSize() : CommonConstant.NUM_OF_MESSAGES_PER_PAGE_DEFAULT;
+        int pageSize = paginationFullRequestDto.getPageSize();
         long totalElements = messages.size();
         int totalPages;
         if (messages.size() % pageSize == 0) totalPages = messages.size() / pageSize;

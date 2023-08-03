@@ -99,4 +99,14 @@ public class UserController {
     return VsResponseUtil.success(userService.getFriendsById(paginationFullRequestDto, user.getId()));
   }
 
+  @Tag(name = "message-controller")
+  @Operation(summary = "API get message by conversation id")
+  @GetMapping(value = UrlConstant.Message.GET_CONVERSATIONS)
+  public ResponseEntity<?> getConversation(@Valid @ParameterObject PaginationFullRequestDto paginationFullRequestDto,
+                                           @Parameter(name = "user", hidden = true)
+                                           @CurrentUser UserPrincipal user) {
+    return VsResponseUtil.success(userService
+            .getConversations(paginationFullRequestDto, user.getId()));
+  }
+
 }

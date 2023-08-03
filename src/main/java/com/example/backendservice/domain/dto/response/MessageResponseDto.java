@@ -21,6 +21,10 @@ public class MessageResponseDto {
 
     private String senderId;
 
+    private String senderUsername;
+
     private String receiverId;
+
+    private String receiverUsername;
 
 }

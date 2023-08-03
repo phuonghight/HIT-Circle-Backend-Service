@@ -20,6 +20,8 @@ public interface MessageMapper {
     @Mappings({
             @Mapping(target = "senderId", source = "message.sender.id"),
             @Mapping(target = "receiverId", source = "message.receiver.id"),
+            @Mapping(target = "senderUsername", source = "message.sender.username"),
+            @Mapping(target = "receiverUsername", source = "message.receiver.username"),
             @Mapping(target = "createdDate", dateFormat = CommonConstant.PATTERN_DATE_TIME),
             @Mapping(target = "lastModifiedDate", dateFormat = CommonConstant.PATTERN_DATE_TIME)
     })
