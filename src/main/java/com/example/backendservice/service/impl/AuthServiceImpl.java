@@ -141,7 +141,7 @@ public class AuthServiceImpl implements AuthService {
     props.put("password", newPassword);
     props.put("appName", CommonConstant.APP_NAME);
 
-    DataMailDto mail = new DataMailDto(user.getUsername(),
+    DataMailDto mail = new DataMailDto(user.getEmail(),
             MessageConstant.SUBJECT_MAIL_RESET_PASSWORD, null, props);
 
     try {
