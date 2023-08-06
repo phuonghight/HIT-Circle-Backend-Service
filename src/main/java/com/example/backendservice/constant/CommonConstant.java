@@ -45,6 +45,9 @@ public class CommonConstant {
     public static final String SERVER_SEND_MESSAGE = "server_send_message";
     public static final String SERVER_SEND_COMMENT = "server_send_comment";
     public static final String SERVER_SEND_COMMENT_NOTIFICATION = "server_send_comment_notification";
+    public static final String SERVER_SEND_POST_NOTIFICATION = "server_send_post_notification";
+    public static final String SERVER_SEND_REACTION_NOTIFICATION = "server_send_reaction_notification";
+
   }
 
   public static class Key {

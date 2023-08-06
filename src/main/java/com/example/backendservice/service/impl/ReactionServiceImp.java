@@ -1,10 +1,13 @@
 package com.example.backendservice.service.impl;
 
+import com.corundumstudio.socketio.SocketIOServer;
+import com.example.backendservice.constant.CommonConstant;
 import com.example.backendservice.constant.ErrorMessage;
 import com.example.backendservice.constant.MessageConstant;
 import com.example.backendservice.domain.dto.request.ReactionRequestDto;
 import com.example.backendservice.domain.dto.response.CommonResponseDto;
 import com.example.backendservice.domain.dto.response.ReactionDto;
+import com.example.backendservice.domain.dto.response.ReactionNotificationResponseDto;
 import com.example.backendservice.domain.entity.Post;
 import com.example.backendservice.domain.entity.Reaction;
 import com.example.backendservice.domain.entity.User;
@@ -26,6 +29,7 @@ public class ReactionServiceImp implements ReactionService {
     private final UserRepository userRepository;
     private final PostRepository postRepository;
     private final ReactionMapper reactionMapper;
+    private final SocketIOServer server;
 
     @Override
     public ReactionDto react(String userId, ReactionRequestDto reactionRequestDto) {
@@ -38,6 +42,14 @@ public class ReactionServiceImp implements ReactionService {
             reaction = reactionMapper.reactionRequestDtoToReaction(reactionRequestDto);
             reaction.setUser(user);
             reaction.setPost(post);
+            reactionRepository.save(reaction);
+
+            // Gửi thông báo đến user tạo bài post
+            ReactionNotificationResponseDto reactionNotificationResponseDto = reactionMapper.reactionToReactionNotificationResponseDto(reaction);
+            reactionNotificationResponseDto.setNotificationMessage(
+                    reactionNotificationResponseDto.getUsername() + " đã bày tỏ cảm xúc về bài viết của bạn");
+            server.getRoomOperations(post.getUser().getId())
+                    .sendEvent(CommonConstant.Event.SERVER_SEND_REACTION_NOTIFICATION, reactionNotificationResponseDto);
         }
         else {
             reaction.setName(reactionRequestDto.getName());
