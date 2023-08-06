@@ -1,5 +1,6 @@
 package com.example.backendservice.service.impl;
 
+import com.corundumstudio.socketio.SocketIOServer;
 import com.example.backendservice.constant.ErrorMessage;
 import com.example.backendservice.constant.MessageConstant;
 import com.example.backendservice.domain.dto.request.PostCreateDto;
@@ -59,9 +60,10 @@ public class PostServiceImp implements PostService {
     }
 
     @Override
-    public Post getPostById(String postId) {
-        return postRepository.findById(postId)
+    public PostDto getPostById(String postId) {
+        Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new NotFoundException(ErrorMessage.Post.ERR_NOT_FOUND_ID, new String[]{postId}));
+        return postMapper.postToPostDto(post);
     }
 
     @Override

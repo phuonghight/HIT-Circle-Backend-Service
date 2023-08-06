@@ -19,6 +19,7 @@ public interface PostMapper {
 
     @Mappings({
             @Mapping(target = "userId", source = "user.id"),
+            @Mapping(target = "avatar", source = "user.avatar", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.SET_TO_NULL),
             @Mapping(target = "mediaFiles", expression = "java(mapMediaFiles(post.getPostMedia()))")
     })
     PostDto postToPostDto(Post post);

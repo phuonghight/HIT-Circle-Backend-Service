@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface PostService {
     PostDto createNewPost(PostCreateDto postCreateDto, String userId);
-    Post getPostById(String postId);
+    PostDto getPostById(String postId);
     PostDto updatePostById(String postId, PostUpdateDto postUpdateDto, String userId);
     CommonResponseDto deletePostById(String postId, String userId);
     List<PostDto> findAllPostByUserId(String userId);
