@@ -31,6 +31,8 @@ public class UrlConstant {
 
     public static final String GET_FRIENDS = PRE_FIX + "/friends";
 
+    public static final String SEARCH_ANOTHER_USER = PRE_FIX + "/search";
+
     private User() {
     }
   }

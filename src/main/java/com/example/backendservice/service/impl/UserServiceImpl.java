@@ -4,6 +4,8 @@ import com.example.backendservice.constant.ErrorMessage;
 import com.example.backendservice.constant.SortByDataConstant;
 import com.example.backendservice.constant.MessageConstant;
 import com.example.backendservice.domain.dto.pagination.*;
+import com.example.backendservice.domain.dto.request.FollowRequestDto;
+import com.example.backendservice.domain.dto.pagination.*;
 import com.example.backendservice.domain.dto.request.ChangePasswordRequestDto;
 import com.example.backendservice.domain.dto.request.UserUpdateDto;
 import com.example.backendservice.domain.dto.response.CommonResponseDto;
@@ -138,6 +140,23 @@ public class UserServiceImpl implements UserService {
   public PaginationResponseDto<UserDto> getFriendsById(PaginationFullRequestDto paginationFullRequestDto, String meId) {
     List<User> userPage = userRepository.getFriendsById(meId);
     return getUserDtoPaginationResponseDto(paginationFullRequestDto, userPage);
+  }
+
+  @Override
+  public PaginationResponseDto<UserDto> searchUserByUsername(
+          PaginationRequestDto paginationRequestDto,
+          String q,
+          String meId
+  ) {
+    List<User> followingByName = userRepository.getFollowingByName(meId, q);
+    if (followingByName.size() >= paginationRequestDto.getPageSize())
+      return this.getUserDtoPaginationResponseDto(paginationRequestDto, followingByName);
+    else {
+      List<User> users = userRepository.getUsersByNameNotFollowing(meId, q);
+      users.addAll(0, followingByName);
+
+      return this.getUserDtoPaginationResponseDto(paginationRequestDto, users);
+    }
   }
 
   private PaginationResponseDto<UserDto> getUserDtoPaginationResponseDto(PaginationRequestDto paginationRequestDto, List<User> users) {

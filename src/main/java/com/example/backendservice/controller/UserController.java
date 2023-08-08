@@ -99,4 +99,17 @@ public class UserController {
     return VsResponseUtil.success(userService.getFriendsById(paginationFullRequestDto, user.getId()));
   }
 
+  @Tag(name = "user-controller")
+  @Operation(summary = "API search user by username or full name")
+  @GetMapping(value = UrlConstant.User.SEARCH_ANOTHER_USER)
+  public ResponseEntity<?>
+  searchUserByUsername(@Parameter(name = "user", hidden = true)
+                       @CurrentUser UserPrincipal user,
+                       @Valid @ParameterObject PaginationRequestDto paginationRequestDto,
+                       @RequestParam String q
+  ) {
+    return VsResponseUtil.success(userService
+            .searchUserByUsername(paginationRequestDto, q, user.getId()));
+  }
+
 }

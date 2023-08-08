@@ -8,7 +8,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -50,10 +49,43 @@ public interface UserRepository extends JpaRepository<User, String> {
           "u.id = f.user_follower_id order by f.created_date desc", nativeQuery = true)
   List<User> getFollowersByUserId(String id);
 
+  @Query(value = "select u.* from users u join follows f on f.user_following_id = ?1 where " +
+          "u.id = f.user_follower_id and (u.username like concat(?2, '%') " +
+          "or u.full_name like concat('%', ?2, '%')) order by f.created_date desc", nativeQuery = true)
+  List<User> getFollowersByName(String userId, String name);
+
+  @Query(value = "select u.* from users u join follows f on f.user_follower_id = ?1 where " +
+          "u.id = f.user_following_id and (u.username like concat(?2, '%') " +
+          "or u.full_name like concat('%', ?2, '%')) order by f.created_date desc", nativeQuery = true)
+  List<User> getFollowingByName(String userId, String name);
+
   @Query(value = "select u.* from users u join follows f on u.id = f.user_following_id " +
           "where f.user_follower_id = ?1 and exists(select ff.* from follows ff where " +
           "ff.user_follower_id = f.user_following_id and ff.user_following_id = ?1) " +
           "order by f.created_date desc", nativeQuery = true)
   List<User> getFriendsById(String userId);
+
+  @Query(value = "select u.* from users u join follows f on u.id = f.user_following_id " +
+          "where f.user_follower_id = ?1 and exists(select ff.* from follows ff where " +
+          "ff.user_follower_id = f.user_following_id and ff.user_following_id = ?1) " +
+          "and (u.username like concat(?2, '%') or u.full_name like concat('%', ?2, '%')) " +
+          "order by f.created_date desc", nativeQuery = true)
+  List<User> getFriendsByName(String userId, String name);
+
+  @Query(value = "select u.* from users u where u.username like concat(?2, '%') " +
+          "or u.full_name like concat('%', ?2, '%')", nativeQuery = true)
+  List<User> getUsersByName(String name);
+
+  @Query(value = "select u.* from users u where u.id not in " +
+          "(select f.user_follower_id from follows f where f.user_following_id = ?1)" +
+          "and u.id <> ?1 and (u.username like concat(?2, '%') or u.full_name like concat('%', ?2, '%'))",
+          nativeQuery = true)
+  List<User> getUsersByNameNotFollowers(String userId, String name);
+
+  @Query(value = "select distinct u.* from users u where u.id not in " +
+          "(select f.user_following_id from follows f where f.user_follower_id = ?1)" +
+          "and u.id <> ?1 and (u.username like concat(?2, '%') or u.full_name like concat('%', ?2, '%'))",
+          nativeQuery = true)
+  List<User> getUsersByNameNotFollowing(String userId, String name);
 
 }
