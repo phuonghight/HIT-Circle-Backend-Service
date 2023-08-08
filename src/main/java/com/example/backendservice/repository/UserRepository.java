@@ -57,8 +57,13 @@ public interface UserRepository extends JpaRepository<User, String> {
           "order by f.created_date desc", nativeQuery = true)
   List<User> getFriendsById(String userId);
 
-  @Query(value = "select u.* from users u join messages m on m.sender_id = ?1 " +
-          "where u.id = m.receiver_id order by m.created_date desc ", nativeQuery = true)
+  @Query(value = "select users.* from users join " +
+          "(select user_id, max(created_date) as max_created_date from " +
+          "(select receiver_id as user_id, created_date from messages where sender_id = ?1 " +
+          "union " +
+          "select sender_id as user_id, created_date from messages where receiver_id = ?1) " +
+          "as temp group by user_id ) as sorted_users on users.id = sorted_users.user_id " +
+          "order by sorted_users.max_created_date DESC", nativeQuery = true)
   Set<User> getConversation(String userId);
 
 }
