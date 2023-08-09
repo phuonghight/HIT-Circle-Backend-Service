@@ -33,7 +33,7 @@ public class ReactionController {
     @Tag(name = "reaction-controller")
     @Operation(summary = "API remove reaction")
     @DeleteMapping( value = UrlConstant.Reaction.REMOVE_REACTION)
-    public ResponseEntity<?> removeReact(@RequestParam String postId,
+    public ResponseEntity<?> removeReact(@PathVariable String postId,
                                             @Parameter(name = "user", hidden = true)
                                             @CurrentUser UserPrincipal user    ) {
         return VsResponseUtil.success(reactionService.removeReact(user.getId(), postId));
@@ -42,7 +42,7 @@ public class ReactionController {
     @Tag(name = "reaction-controller")
     @Operation(summary = "API get my reaction")
     @GetMapping( value = UrlConstant.Reaction.GET_MY_REACTION)
-    public ResponseEntity<?> getMyReactionByPostId(@RequestParam String postId,
+    public ResponseEntity<?> getMyReactionByPostId(@PathVariable String postId,
                                             @Parameter(name = "user", hidden = true)
                                             @CurrentUser UserPrincipal user    ) {
         return VsResponseUtil.success(reactionService.findReactionByUserIdAndPostId(user.getId(), postId));
@@ -52,14 +52,14 @@ public class ReactionController {
     @Operation(summary = "API get user reaction")
     @GetMapping( value = UrlConstant.Reaction.GET_USER_REACTION)
     public ResponseEntity<?> getReactionByUserIdAndPostId(@RequestParam String userId,
-                                                          @RequestParam String postId) {
+                                                          @PathVariable String postId) {
         return VsResponseUtil.success(reactionService.findReactionByUserIdAndPostId(userId, postId));
     }
 
     @Tag(name = "reaction-controller")
     @Operation(summary = "API get all reaction")
     @GetMapping( value = UrlConstant.Reaction.GET_ALL_REACTION)
-    public ResponseEntity<?> getAllReactionByPostId(@RequestParam String postId) {
+    public ResponseEntity<?> getAllReactionByPostId(@PathVariable String postId) {
         return VsResponseUtil.success(reactionService.findAllReactionByPostId(postId));
     }
 

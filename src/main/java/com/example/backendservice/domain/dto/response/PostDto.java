@@ -16,5 +16,7 @@ public class PostDto extends UserDateAuditingDto {
     private String id;
     private String caption;
     private String userId;
+    private String username;
+    private String avatar;
     private List<String> mediaFiles;
 }

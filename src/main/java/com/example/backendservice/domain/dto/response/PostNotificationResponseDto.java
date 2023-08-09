@@ -1,7 +1,5 @@
 package com.example.backendservice.domain.dto.response;
 
-import com.example.backendservice.domain.dto.common.UserDateAuditingDto;
-import com.example.backendservice.domain.entity.common.UserDateAuditing;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,11 +9,13 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class ReactionDto extends UserDateAuditingDto {
+public class PostNotificationResponseDto {
     private String id;
-    private String name;
-    private String userId;
+    private String notificationMessage;
     private String username;
     private String avatar;
-    private String postId;
+    private String createdBy;
+    private String lastModifiedBy;
+    private String createdDate;
+    private String lastModifiedDate;
 }
