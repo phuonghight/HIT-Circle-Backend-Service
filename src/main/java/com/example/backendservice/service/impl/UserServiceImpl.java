@@ -152,8 +152,6 @@ public class UserServiceImpl implements UserService {
     return getUserDtoPaginationResponseDto(paginationFullRequestDto, new ArrayList<>(users));
   }
 
-  private PaginationResponseDto<UserDto> getUserDtoPaginationResponseDto(PaginationRequestDto paginationRequestDto,
-                                                                         List<User> users) {
   public PaginationResponseDto<UserDto> searchUserByUsername(
           PaginationRequestDto paginationRequestDto,
           String q,
