@@ -26,7 +26,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -143,6 +145,15 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
+  public PaginationResponseDto<UserDto> getConversations(
+          PaginationFullRequestDto paginationFullRequestDto, String meId
+  ) {
+    Set<User> users = userRepository.getConversation(meId);
+    return getUserDtoPaginationResponseDto(paginationFullRequestDto, new ArrayList<>(users));
+  }
+
+  private PaginationResponseDto<UserDto> getUserDtoPaginationResponseDto(PaginationRequestDto paginationRequestDto,
+                                                                         List<User> users) {
   public PaginationResponseDto<UserDto> searchUserByUsername(
           PaginationRequestDto paginationRequestDto,
           String q,

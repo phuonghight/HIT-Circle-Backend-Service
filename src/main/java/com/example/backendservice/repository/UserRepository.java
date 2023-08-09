@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, String> {
@@ -65,6 +66,15 @@ public interface UserRepository extends JpaRepository<User, String> {
           "order by f.created_date desc", nativeQuery = true)
   List<User> getFriendsById(String userId);
 
+  @Query(value = "select users.* from users join " +
+          "(select user_id, max(created_date) as max_created_date from " +
+          "(select receiver_id as user_id, created_date from messages where sender_id = ?1 " +
+          "union " +
+          "select sender_id as user_id, created_date from messages where receiver_id = ?1) " +
+          "as temp group by user_id ) as sorted_users on users.id = sorted_users.user_id " +
+          "order by sorted_users.max_created_date DESC", nativeQuery = true)
+  Set<User> getConversation(String userId);
+
   @Query(value = "select u.* from users u join follows f on u.id = f.user_following_id " +
           "where f.user_follower_id = ?1 and exists(select ff.* from follows ff where " +
           "ff.user_follower_id = f.user_following_id and ff.user_following_id = ?1) " +
@@ -87,5 +97,4 @@ public interface UserRepository extends JpaRepository<User, String> {
           "and u.id <> ?1 and (u.username like concat(?2, '%') or u.full_name like concat('%', ?2, '%'))",
           nativeQuery = true)
   List<User> getUsersByNameNotFollowing(String userId, String name);
-
 }

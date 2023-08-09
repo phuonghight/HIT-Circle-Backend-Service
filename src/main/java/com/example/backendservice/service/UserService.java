@@ -34,6 +34,8 @@ public interface UserService {
 
   PaginationResponseDto<UserDto> getFriendsById(PaginationFullRequestDto paginationFullRequestDto, String meId);
 
+  PaginationResponseDto<UserDto> getConversations(PaginationFullRequestDto paginationFullRequestDto, String meId);
+
   PaginationResponseDto<UserDto> searchUserByUsername(
           PaginationRequestDto paginationRequestDto,
           String q,
