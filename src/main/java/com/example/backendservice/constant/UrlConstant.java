@@ -31,6 +31,8 @@ public class UrlConstant {
 
     public static final String GET_FRIENDS = PRE_FIX + "/friends";
 
+    public static final String SEARCH_ANOTHER_USER = PRE_FIX + "/search";
+
     private User() {
     }
   }
@@ -68,11 +70,11 @@ public class UrlConstant {
   public static class Reaction {
     private static final String PRE_FIX = "/reaction";
     public static final String CREATE_UPDATE_REACTION = PRE_FIX;
-    public static final String REMOVE_REACTION = PRE_FIX;
-    public static final String GET_MY_REACTION = PRE_FIX + "/me";
-    public static final String GET_USER_REACTION = PRE_FIX + "/user";
-    public static final String GET_ALL_REACTION = PRE_FIX + "/get_all";
-    public static final String GET_ALL_BY_TYPE_REACTION = PRE_FIX + "/get_all_by_type";
+    public static final String REMOVE_REACTION = PRE_FIX + "/{postId}";
+    public static final String GET_MY_REACTION = PRE_FIX + "/me/{postId}";
+    public static final String GET_USER_REACTION = PRE_FIX + "/user/{postId}";
+    public static final String GET_ALL_REACTION = PRE_FIX + "/all/{postId}";
+    public static final String GET_ALL_BY_TYPE_REACTION = PRE_FIX + "/all/type";
     private Reaction() {
     }
   }
@@ -85,6 +87,20 @@ public class UrlConstant {
     public static final String GET_CONVERSATIONS = PRE_FIX + "/conversations";
 
     private Message() {}
+  }
+
+  public static class Comment {
+    private static final String PRE_FIX = "/comment";
+
+    public static final String CREATE_COMMENT = PRE_FIX;
+    public static final String UPDATE_COMMENT = PRE_FIX + "/{commentId}";
+    public static final String DELETE_COMMENT = PRE_FIX + "/{commentId}";
+    public static final String GET_BY_COMMENT_ID = PRE_FIX + "/{commentId}";
+    public static final String GET_ALL_BY_POST_ID = PRE_FIX + "/all/{postId}";
+    public static final String GET_ALL_BY_PARENT_COMMENT_ID = PRE_FIX + "/replies/{parentCommentId}";
+
+    private Comment() {
+    }
   }
 
 }

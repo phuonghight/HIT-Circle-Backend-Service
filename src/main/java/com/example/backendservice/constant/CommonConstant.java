@@ -31,15 +31,23 @@ public class CommonConstant {
   public static final Long MAX_VIDEO_SIZE_BYTES = MAX_VIDEO_SIZE_MB * 1024 * 1024;
 
   public static final Integer NUM_OF_MESSAGES_PER_PAGE_DEFAULT = 30;
+  public static final Integer MAX_OF_LEVEL_COMMENT= 3;
+  public static final Integer NUM_OF_COMMENT_PER_PAGE_DEFAULT = 20;
 
   public static class Event {
     //Client
     public static final String CLIENT_SEND_MESSAGE = "client_send_message";
     public static final String CLIENT_JOIN_ROOM = "client_join_room";
+    public static final String CLIENT_SEND_COMMENT = "client_send_comment";
 
     //Server
     public static final String SERVER_SEND_ERROR = "server_send_error";
     public static final String SERVER_SEND_MESSAGE = "server_send_message";
+    public static final String SERVER_SEND_COMMENT = "server_send_comment";
+    public static final String SERVER_SEND_COMMENT_NOTIFICATION = "server_send_comment_notification";
+    public static final String SERVER_SEND_POST_NOTIFICATION = "server_send_post_notification";
+    public static final String SERVER_SEND_REACTION_NOTIFICATION = "server_send_reaction_notification";
+
   }
 
   public static class Key {

@@ -1,11 +1,14 @@
 package com.example.backendservice.service.impl;
 
+import com.corundumstudio.socketio.SocketIOServer;
+import com.example.backendservice.constant.CommonConstant;
 import com.example.backendservice.constant.ErrorMessage;
 import com.example.backendservice.constant.MessageConstant;
 import com.example.backendservice.domain.dto.request.PostCreateDto;
 import com.example.backendservice.domain.dto.request.PostUpdateDto;
 import com.example.backendservice.domain.dto.response.CommonResponseDto;
 import com.example.backendservice.domain.dto.response.PostDto;
+import com.example.backendservice.domain.dto.response.PostNotificationResponseDto;
 import com.example.backendservice.domain.entity.Post;
 import com.example.backendservice.domain.entity.PostMedia;
 import com.example.backendservice.domain.entity.User;
@@ -35,6 +38,7 @@ public class PostServiceImp implements PostService {
     private final PostMediaService postMediaService;
     private final PostMapper postMapper;
     private final UploadFileUtil uploadFileUtil;
+    private final SocketIOServer server;
     @Override
     public PostDto createNewPost(PostCreateDto postCreateDto, String userId) {
         if ((postCreateDto.getCaption() == null || postCreateDto.getCaption().equals("")) &&
@@ -54,14 +58,27 @@ public class PostServiceImp implements PostService {
                 }
             }
             post.setPostMedia(postMediaList);
-            return postMapper.postToPostDto(postRepository.save(post));
+            postRepository.save(post);
+
+            // Server gửi thông báo đến những user follow user tạo post
+            PostNotificationResponseDto postNotificationResponseDto = postMapper.postToPostNotificationResponseDto(post);
+            postNotificationResponseDto.setNotificationMessage(postNotificationResponseDto.getUsername() + " đã thêm một bài viết mới");
+            List<User> users = userRepository.getFollowersByUserId(user.getId());
+            if (!users.isEmpty()) {
+                for (User user1 : users) {
+                    server.getRoomOperations(user1.getId())
+                            .sendEvent(CommonConstant.Event.SERVER_SEND_POST_NOTIFICATION, postNotificationResponseDto);
+                }
+            }
+            return postMapper.postToPostDto(post);
         }
     }
 
     @Override
-    public Post getPostById(String postId) {
-        return postRepository.findById(postId)
+    public PostDto getPostById(String postId) {
+        Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new NotFoundException(ErrorMessage.Post.ERR_NOT_FOUND_ID, new String[]{postId}));
+        return postMapper.postToPostDto(post);
     }
 
     @Override
