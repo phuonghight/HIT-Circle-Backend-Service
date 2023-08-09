@@ -107,6 +107,8 @@ public class UserController {
                                            @CurrentUser UserPrincipal user) {
     return VsResponseUtil.success(userService
             .getConversations(paginationFullRequestDto, user.getId()));
+  }
+
   @Tag(name = "user-controller")
   @Operation(summary = "API search user by username or full name")
   @GetMapping(value = UrlConstant.User.SEARCH_ANOTHER_USER)
